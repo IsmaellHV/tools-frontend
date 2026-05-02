@@ -1,9 +1,18 @@
-# DevTools
+<p align="center">
+  <img src="public/favicon.svg" alt="DevTools logo" width="96" height="96" />
+</p>
 
-> Free, in-browser developer utilities.
-> Base64, QR, JSON, AES, JWT and more — everything runs locally in your browser.
+<h1 align="center">DevTools</h1>
 
-🔗 **Live:** [ismaelhv.com/tools](https://ismaelhv.com/tools/)
+<p align="center">
+  Free, in-browser developer utilities.<br/>
+  Base64, QR, JSON, AES, JWT and more — everything runs locally in your browser.
+</p>
+
+<p align="center">
+  🔗 <a href="https://ismaelhv.com/tools/">ismaelhv.com/tools</a> ·
+  ✨ by <a href="https://ismaelhv.com">Ismael Hurtado</a>
+</p>
 
 ---
 

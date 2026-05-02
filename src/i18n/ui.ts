@@ -10,6 +10,7 @@ export type Lang = keyof typeof languages;
 export const ui = {
   en: {
     'nav.home': 'Tools',
+    'nav.about': 'About',
     'nav.github': 'GitHub',
     'nav.toggleTheme': 'Toggle theme',
     'nav.toggleLang': 'Switch language',
@@ -41,6 +42,23 @@ export const ui = {
 
     'footer.tagline': 'DevTools · Private, in-browser developer utilities',
     'footer.privacy': 'Everything runs locally in your browser.',
+    'footer.byAuthor': 'by',
+
+    'about.metaTitle': 'About DevTools — Free, In-Browser Developer Utilities',
+    'about.metaDescription':
+      'About DevTools: a free collection of in-browser developer utilities (Base64, JSON, JWT, AES, QR). 100% client-side, private, no upload, no tracking.',
+    'about.metaKeywords': 'about devtools, free developer tools, browser developer utilities, no upload tools, privacy tools',
+    'about.title': 'About DevTools',
+    'about.body1':
+      'DevTools is a small set of free developer utilities that run entirely in your browser. Base64, JSON viewer, JSON to Excel, QR reader and generator, AES encrypt/decrypt, JWT decoder — all without uploading anything.',
+    'about.body2':
+      'Everything is client-side. Your input never leaves the page, so you can paste tokens, JSON payloads or images without worrying about leaks or third-party trackers.',
+    'about.authorTitle': 'About the author',
+    'about.authorBody':
+      'Built and maintained by Ismael Hurtado Vargas, a Full-Stack developer based in Lima, Peru. Focused on web, mobile and AI automation since 2014.',
+    'about.viewSource': 'View source on GitHub',
+    'about.visitPortfolio': 'Visit portfolio',
+    'about.madeBy': 'Made by',
 
     // Captcha gate
     'gate.title': 'Quick check',
@@ -184,6 +202,7 @@ export const ui = {
   },
   es: {
     'nav.home': 'Herramientas',
+    'nav.about': 'Acerca',
     'nav.github': 'GitHub',
     'nav.toggleTheme': 'Cambiar tema',
     'nav.toggleLang': 'Cambiar idioma',
@@ -215,6 +234,23 @@ export const ui = {
 
     'footer.tagline': 'DevTools · Utilidades privadas en tu navegador',
     'footer.privacy': 'Todo se ejecuta localmente en tu navegador.',
+    'footer.byAuthor': 'por',
+
+    'about.metaTitle': 'Acerca de DevTools — Utilidades de Desarrollador en tu Navegador',
+    'about.metaDescription':
+      'Acerca de DevTools: un set gratis de utilidades para desarrolladores que funcionan 100% en tu navegador (Base64, JSON, JWT, AES, QR). Sin subir nada, sin rastreo.',
+    'about.metaKeywords': 'acerca devtools, herramientas desarrollador gratis, utilidades navegador, sin upload, herramientas privadas',
+    'about.title': 'Acerca de DevTools',
+    'about.body1':
+      'DevTools es un set pequeño de utilidades gratis para desarrolladores que se ejecutan completamente en tu navegador. Base64, visor JSON, JSON a Excel, lector y generador QR, cifrado AES, decodificador JWT — todo sin subir nada.',
+    'about.body2':
+      'Todo corre del lado cliente. Tu entrada nunca sale de la página, así que puedes pegar tokens, payloads JSON o imágenes sin preocuparte por filtraciones ni rastreadores de terceros.',
+    'about.authorTitle': 'Sobre el autor',
+    'about.authorBody':
+      'Construido y mantenido por Ismael Hurtado Vargas, desarrollador Full-Stack en Lima, Perú. Enfocado en web, mobile y automatización con IA desde 2014.',
+    'about.viewSource': 'Ver código en GitHub',
+    'about.visitPortfolio': 'Ver portfolio',
+    'about.madeBy': 'Hecho por',
 
     'gate.title': 'Verificación rápida',
     'gate.body': 'Resuelve el captcha una vez para desbloquear todas las herramientas de la sesión. Ayuda a evitar abuso automatizado.',
