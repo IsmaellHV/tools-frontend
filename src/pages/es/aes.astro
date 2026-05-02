@@ -1,0 +1,40 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ToolShell from '~/components/ToolShell.astro';
+import AesTool from '~/components/tools/AesTool';
+import { getLangFromUrl, useTranslations, withBase } from '~/i18n/utils';
+import { buildDict } from '~/lib/dict';
+import { buildToolJsonLd } from '~/lib/seo';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const h1 = t('t.aes.title');
+const lead = t('t.aes.lead');
+const metaTitle = t('seo.aes.title');
+const metaDesc = t('seo.aes.description');
+const keywords = t('seo.aes.keywords');
+
+const SITE = (import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'https://ismaelhv.com').replace(/\/$/, '');
+const url = `${SITE}${Astro.url.pathname.replace(/\/$/, '')}`;
+const homePath = lang === 'en' ? withBase('/') : withBase('/es/');
+const jsonLd = buildToolJsonLd({ name: h1, description: lead, url, lang, category: 'SecurityApplication' }, SITE, homePath);
+
+const dict = buildDict(lang, [
+  'ui.copy',
+  'ui.copied',
+  'ui.copyFailed',
+  't.aes.passphrase',
+  't.aes.passphrasePh',
+  't.aes.plaintext',
+  't.aes.ciphertext',
+  't.aes.encrypt',
+  't.aes.decrypt',
+  't.aes.errDecrypt',
+] as const);
+---
+
+<BaseLayout title={metaTitle} description={metaDesc} {keywords} {jsonLd}>
+  <ToolShell title={h1} {lead}>
+    <AesTool client:only="react" dict={dict} />
+  </ToolShell>
+</BaseLayout>

@@ -1,0 +1,41 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ToolShell from '~/components/ToolShell.astro';
+import Base64Tool from '~/components/tools/Base64Tool';
+import { getLangFromUrl, useTranslations, withBase } from '~/i18n/utils';
+import { buildDict } from '~/lib/dict';
+import { buildToolJsonLd } from '~/lib/seo';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const h1 = t('t.b64.title');
+const lead = t('t.b64.lead');
+const metaTitle = t('seo.b64.title');
+const metaDesc = t('seo.b64.description');
+const keywords = t('seo.b64.keywords');
+
+const SITE = (import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'https://ismaelhv.com').replace(/\/$/, '');
+const url = `${SITE}${Astro.url.pathname.replace(/\/$/, '')}`;
+const homePath = lang === 'en' ? withBase('/') : withBase('/es/');
+const jsonLd = buildToolJsonLd({ name: h1, description: lead, url, lang }, SITE, homePath);
+
+const dict = buildDict(lang, [
+  'ui.input',
+  'ui.output',
+  'ui.copy',
+  'ui.copied',
+  'ui.copyFailed',
+  'ui.clear',
+  'ui.invalid',
+  't.b64.encode',
+  't.b64.decode',
+  't.b64.placeholderEnc',
+  't.b64.placeholderDec',
+] as const);
+---
+
+<BaseLayout title={metaTitle} description={metaDesc} {keywords} {jsonLd}>
+  <ToolShell title={h1} {lead}>
+    <Base64Tool client:only="react" dict={dict} />
+  </ToolShell>
+</BaseLayout>

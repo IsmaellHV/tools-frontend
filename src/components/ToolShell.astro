@@ -1,0 +1,40 @@
+---
+import CaptchaGate from '~/components/CaptchaGate.tsx';
+import { getLangFromUrl, useTranslations, withBase } from '~/i18n/utils';
+import { buildDict } from '~/lib/dict';
+
+interface Props {
+  title: string;
+  lead?: string;
+}
+
+const { title, lead } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const homeHref = lang === 'en' ? withBase('/') : withBase('/es/');
+
+const SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
+
+const gateDict = buildDict(lang, ['gate.title', 'gate.body', 'gate.unlocked', 'gate.failed', 'gate.retry'] as const);
+---
+
+<section>
+  <a href={homeHref} class="tag mb-4 inline-block" style="text-decoration: none">← {t('nav.home')}</a>
+
+  <header class="mb-8" style="border-bottom: 4px solid var(--color-border-strong); padding-bottom: 1.5rem">
+    <h1 class="text-4xl md:text-5xl">{title}</h1>
+    {
+      lead && (
+        <p class="mt-3 max-w-2xl text-base md:text-lg" style="color: var(--color-fg-muted)">
+          {lead}
+        </p>
+      )
+    }
+  </header>
+
+  <CaptchaGate siteKey={SITE_KEY} dict={gateDict} client:only="react">
+    <slot />
+  </CaptchaGate>
+</section>
+
+<span class="sr-only">{t('nav.toggleLang')}</span>

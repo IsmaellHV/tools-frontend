@@ -1,0 +1,19 @@
+---
+import { getLangFromUrl, localizePath } from '~/i18n/utils';
+import { languages, type Lang } from '~/i18n/ui';
+
+const current: Lang = getLangFromUrl(Astro.url);
+const other: Lang = current === 'en' ? 'es' : 'en';
+const href = localizePath(Astro.url.pathname, other);
+const label = languages[other];
+---
+
+<a
+  href={href}
+  hreflang={other}
+  aria-label={`Switch to ${label}`}
+  class="inline-flex h-9 items-center justify-center px-3 text-xs font-semibold uppercase tracking-wider"
+  style="border: 2px solid var(--color-border-strong); color: var(--color-fg); background: var(--color-bg-card); border-radius: 0; text-decoration: none"
+>
+  {other}
+</a>

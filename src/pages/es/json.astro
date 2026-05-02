@@ -1,0 +1,40 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ToolShell from '~/components/ToolShell.astro';
+import JsonTool from '~/components/tools/JsonTool';
+import { getLangFromUrl, useTranslations, withBase } from '~/i18n/utils';
+import { buildDict } from '~/lib/dict';
+import { buildToolJsonLd } from '~/lib/seo';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const h1 = t('t.json.title');
+const lead = t('t.json.lead');
+const metaTitle = t('seo.json.title');
+const metaDesc = t('seo.json.description');
+const keywords = t('seo.json.keywords');
+
+const SITE = (import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'https://ismaelhv.com').replace(/\/$/, '');
+const url = `${SITE}${Astro.url.pathname.replace(/\/$/, '')}`;
+const homePath = lang === 'en' ? withBase('/') : withBase('/es/');
+const jsonLd = buildToolJsonLd({ name: h1, description: lead, url, lang }, SITE, homePath);
+
+const dict = buildDict(lang, [
+  'ui.input',
+  'ui.copy',
+  'ui.copied',
+  'ui.copyFailed',
+  'ui.clear',
+  't.json.placeholder',
+  't.json.format',
+  't.json.minify',
+  't.json.tree',
+  't.json.raw',
+] as const);
+---
+
+<BaseLayout title={metaTitle} description={metaDesc} {keywords} {jsonLd}>
+  <ToolShell title={h1} {lead}>
+    <JsonTool client:only="react" dict={dict} />
+  </ToolShell>
+</BaseLayout>

@@ -1,0 +1,38 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ToolShell from '~/components/ToolShell.astro';
+import JsonExcelTool from '~/components/tools/JsonExcelTool';
+import { getLangFromUrl, useTranslations, withBase } from '~/i18n/utils';
+import { buildDict } from '~/lib/dict';
+import { buildToolJsonLd } from '~/lib/seo';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const h1 = t('t.j2x.title');
+const lead = t('t.j2x.lead');
+const metaTitle = t('seo.j2x.title');
+const metaDesc = t('seo.j2x.description');
+const keywords = t('seo.j2x.keywords');
+
+const SITE = (import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'https://ismaelhv.com').replace(/\/$/, '');
+const url = `${SITE}${Astro.url.pathname.replace(/\/$/, '')}`;
+const homePath = lang === 'en' ? withBase('/') : withBase('/es/');
+const jsonLd = buildToolJsonLd({ name: h1, description: lead, url, lang }, SITE, homePath);
+
+const dict = buildDict(lang, [
+  'ui.input',
+  't.j2x.placeholder',
+  't.j2x.sheetName',
+  't.j2x.dlXlsx',
+  't.j2x.dlCsv',
+  't.j2x.notArray',
+  't.j2x.rows',
+  't.j2x.cols',
+] as const);
+---
+
+<BaseLayout title={metaTitle} description={metaDesc} {keywords} {jsonLd}>
+  <ToolShell title={h1} {lead}>
+    <JsonExcelTool client:only="react" dict={dict} />
+  </ToolShell>
+</BaseLayout>

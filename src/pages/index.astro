@@ -1,0 +1,120 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getLangFromUrl, useTranslations, withBase } from '~/i18n/utils';
+import { TOOLS } from '~/lib/tools';
+
+const SITE = (import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'https://ismaelhv.com').replace(/\/$/, '');
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const title = t('home.metaTitle');
+const description = t('home.metaDescription');
+const keywords =
+  lang === 'en'
+    ? 'developer tools, online tools, base64, qr code, json viewer, json to excel, aes encrypt, jwt decoder, free dev utilities, in-browser tools'
+    : 'herramientas desarrollo, utilidades online, base64, codigo qr, visor json, json a excel, cifrar aes, decodificador jwt, dev tools gratis';
+
+const langPrefix = lang === 'en' ? '' : '/es';
+const toolHref = (slug: string) => withBase(`${langPrefix}/${slug}`);
+const toolUrl = (slug: string) => `${SITE}${toolHref(slug)}`;
+const homeUrl = `${SITE}${withBase(langPrefix === '' ? '/' : '/es/')}`;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'DevTools',
+    url: homeUrl,
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript and a modern browser',
+    isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    description,
+    inLanguage: lang,
+    publisher: { '@type': 'Person', name: 'ismaelhv', url: 'https://ismaelhv.com' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: lang === 'es' ? 'Herramientas para desarrolladores' : 'Developer tools',
+    numberOfItems: TOOLS.length,
+    itemListElement: TOOLS.map((tool, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: t(tool.titleKey),
+      description: t(tool.bodyKey),
+      url: toolUrl(tool.slug),
+    })),
+  },
+];
+---
+
+<BaseLayout {title} {description} {keywords} {jsonLd}>
+  <section class="mb-16 grid gap-8 md:grid-cols-[1.4fr_1fr]">
+    <div>
+      <p class="tag mb-5">// {String(TOOLS.length).padStart(2, '0')} TOOLS · v1.0</p>
+      <h1 class="text-5xl leading-[0.95] md:text-7xl">
+        {t('home.heroPre')}<br />
+        <span style="background: var(--color-accent); color: var(--color-accent-fg); padding: 0 0.3em; display: inline-block">
+          {t('home.heroAccent')}
+        </span>{t('home.heroDot')}
+      </h1>
+      <p class="mt-6 max-w-xl text-base md:text-lg" style="color: var(--color-fg-muted)">
+        {t('home.heroLead')}
+      </p>
+    </div>
+    <div class="card flex flex-col justify-between" style="background: var(--color-bg-raised)">
+      <div>
+        <p class="label">/* MANIFESTO */</p>
+        <ul class="space-y-2 text-sm">
+          <li>→ Runs 100% in your browser</li>
+          <li>→ Zero uploads, zero tracking</li>
+          <li>→ Open source, MIT licensed</li>
+          <li>→ Bilingual (EN / ES)</li>
+        </ul>
+      </div>
+      <p class="mt-6 font-mono text-xs" style="color: var(--color-fg-muted)">
+        $ ls ./tools | wc -l<br />
+        <span style="color: var(--color-accent)">{TOOLS.length}</span>
+      </p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section>
+    <div class="mb-6 flex items-end justify-between">
+      <h2 class="text-2xl md:text-3xl">{t('nav.home')}</h2>
+      <p class="tag">{TOOLS.length} / {TOOLS.length}</p>
+    </div>
+
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {
+        TOOLS.map((tool, i) => (
+          <a href={toolHref(tool.slug)} class="tile group">
+            <div class="mb-4 flex items-start justify-between">
+              <span
+                class="font-mono text-xs"
+                style="color: var(--color-fg-muted)"
+              >
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span class="tag" style="background: var(--color-accent); color: var(--color-accent-fg); border-color: var(--color-border-strong)">
+                {tool.icon}
+              </span>
+            </div>
+            <h3 class="mb-2 text-lg">{t(tool.titleKey)}</h3>
+            <p class="text-sm" style="color: var(--color-fg-muted)">
+              {t(tool.bodyKey)}
+            </p>
+            <p class="mt-4 font-mono text-xs" style="color: var(--color-accent)">
+              → /{tool.slug}
+            </p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
