@@ -6,8 +6,11 @@
     </linearGradient>
   </defs>
   <rect width="64" height="64" rx="14" fill="url(#t-bg)"/>
-  <g transform="rotate(-45 32 32)" fill="#22d3a3" stroke="#22d3a3" stroke-width="2" stroke-linejoin="round">
-    <path d="M14 26 a10 10 0 0 1 14 -10 l-4 4 v6 h6 l4 -4 a10 10 0 0 1 -10 14 l18 18 a3.5 3.5 0 0 1 -5 5 l-18 -18 a10 10 0 0 1 -5 -15 z"/>
+  <!-- Open-ended wrench, rotated -45° -->
+  <g transform="rotate(-45 32 32)" fill="#22d3a3">
+    <!-- Handle -->
+    <rect x="28" y="24" width="8" height="34" rx="2"/>
+    <!-- Jaw head with U-notch -->
+    <path d="M20 8 H44 V26 H36 V18 H28 V26 H20 Z"/>
   </g>
-  <path d="M46 10 L54 10 L42 54 L34 54 Z" fill="#facc15" opacity="0.9"/>
 </svg>
