@@ -16,4 +16,5 @@ export const TOOLS: readonly ToolMeta[] = [
   { slug: 'json-excel', titleKey: 'home.cards.jsonExcel.title', bodyKey: 'home.cards.jsonExcel.body', icon: 'XLS' },
   { slug: 'aes', titleKey: 'home.cards.aes.title', bodyKey: 'home.cards.aes.body', icon: 'AES' },
   { slug: 'jwt', titleKey: 'home.cards.jwt.title', bodyKey: 'home.cards.jwt.body', icon: 'JWT' },
+  { slug: 'password', titleKey: 'home.cards.password.title', bodyKey: 'home.cards.password.body', icon: 'PWD' },
 ] as const;

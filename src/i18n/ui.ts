@@ -39,6 +39,8 @@ export const ui = {
     'home.cards.aes.body': 'Encrypt or decrypt text with AES and a passphrase.',
     'home.cards.jwt.title': 'JWT decoder',
     'home.cards.jwt.body': 'Inspect a JWT — header, payload and expiration — without verifying.',
+    'home.cards.password.title': 'Password generator',
+    'home.cards.password.body': 'Generate strong random passwords with custom length and character sets.',
 
     'footer.tagline': 'DevTools · Private, in-browser developer utilities',
     'footer.privacy': 'Everything runs locally in your browser.',
@@ -147,6 +149,25 @@ export const ui = {
     't.aes.decrypt': 'Decrypt',
     't.aes.errDecrypt': 'Could not decrypt. Wrong passphrase or corrupted ciphertext.',
 
+    // Password generator
+    't.pwd.title': 'Password generator',
+    't.pwd.lead': 'Generate cryptographically strong random passwords. Runs locally — never leaves your browser.',
+    't.pwd.intro': 'Use our online password generator to instantly create a secure, random password.',
+    't.pwd.length': 'Length',
+    't.pwd.upper': 'Uppercase',
+    't.pwd.lower': 'Lowercase',
+    't.pwd.numbers': 'Numbers',
+    't.pwd.symbols': 'Symbols',
+    't.pwd.regenerate': 'Regenerate',
+    't.pwd.copy': 'Copy password',
+    't.pwd.charsUsed': 'Characters used',
+    't.pwd.errNoChars': 'Select at least one character set.',
+    't.pwd.strength.veryWeak': 'Very weak',
+    't.pwd.strength.weak': 'Weak',
+    't.pwd.strength.fair': 'Fair',
+    't.pwd.strength.strong': 'Strong',
+    't.pwd.strength.veryStrong': 'Very strong',
+
     // JWT
     't.jwt.title': 'JWT decoder',
     't.jwt.lead': 'Decode a JWT and inspect its header, payload and expiration. Signature is NOT verified.',
@@ -199,6 +220,11 @@ export const ui = {
     'seo.jwt.description':
       'Decode any JWT (JSON Web Token) and inspect header, payload and expiration date. Runs entirely in your browser. Signature is not verified.',
     'seo.jwt.keywords': 'jwt decoder, decode jwt online, jwt parser, jwt inspector, json web token decoder, jwt debugger',
+
+    'seo.pwd.title': 'Password Generator Online — Strong, Random, Free · DevTools',
+    'seo.pwd.description':
+      'Generate strong random passwords with custom length (4–128) and character sets (uppercase, lowercase, numbers, symbols). 100% in-browser, no logs.',
+    'seo.pwd.keywords': 'password generator, random password, strong password, secure password generator, free password generator online, create password',
   },
   es: {
     'nav.home': 'Herramientas',
@@ -231,6 +257,8 @@ export const ui = {
     'home.cards.aes.body': 'Cifra o descifra texto con AES y una clave.',
     'home.cards.jwt.title': 'Decodificador JWT',
     'home.cards.jwt.body': 'Inspecciona un JWT — header, payload y expiración — sin verificar firma.',
+    'home.cards.password.title': 'Generador de contraseñas',
+    'home.cards.password.body': 'Genera contraseñas aleatorias seguras con longitud y caracteres personalizados.',
 
     'footer.tagline': 'DevTools · Utilidades privadas en tu navegador',
     'footer.privacy': 'Todo se ejecuta localmente en tu navegador.',
@@ -330,6 +358,25 @@ export const ui = {
     't.aes.decrypt': 'Descifrar',
     't.aes.errDecrypt': 'No se pudo descifrar. Clave incorrecta o texto corrupto.',
 
+    // Password generator
+    't.pwd.title': 'Generador de contraseñas',
+    't.pwd.lead': 'Genera contraseñas aleatorias seguras criptográficamente. Todo local — no sale de tu navegador.',
+    't.pwd.intro': 'Utiliza nuestro generador de contraseñas online para crear al instante una contraseña segura y aleatoria.',
+    't.pwd.length': 'Longitud',
+    't.pwd.upper': 'Mayúsculas',
+    't.pwd.lower': 'Minúsculas',
+    't.pwd.numbers': 'Números',
+    't.pwd.symbols': 'Símbolos',
+    't.pwd.regenerate': 'Regenerar',
+    't.pwd.copy': 'Copiar contraseña',
+    't.pwd.charsUsed': 'Caracteres usados',
+    't.pwd.errNoChars': 'Selecciona al menos un tipo de caracteres.',
+    't.pwd.strength.veryWeak': 'Muy débil',
+    't.pwd.strength.weak': 'Débil',
+    't.pwd.strength.fair': 'Aceptable',
+    't.pwd.strength.strong': 'Segura',
+    't.pwd.strength.veryStrong': 'Muy segura',
+
     't.jwt.title': 'Decodificador JWT',
     't.jwt.lead': 'Decodifica un JWT e inspecciona header, payload y expiración. La firma NO se verifica.',
     't.jwt.placeholder': 'eyJhbGciOiJIUzI1NiIs…',
@@ -380,6 +427,11 @@ export const ui = {
     'seo.jwt.description':
       'Decodifica cualquier JWT (JSON Web Token) e inspecciona header, payload y fecha de expiración. Todo en tu navegador. La firma no se verifica.',
     'seo.jwt.keywords': 'decodificar jwt, jwt online, parser jwt, decoder json web token, inspector jwt',
+
+    'seo.pwd.title': 'Generador de Contraseñas Online — Seguras y Aleatorias · DevTools',
+    'seo.pwd.description':
+      'Genera contraseñas aleatorias seguras con longitud personalizada (4–128) y juegos de caracteres (mayúsculas, minúsculas, números, símbolos). 100% en tu navegador.',
+    'seo.pwd.keywords': 'generador de contraseñas, contraseña aleatoria, contraseña segura, generar password, crear contraseña fuerte, password generator español',
   },
 } as const;
 
