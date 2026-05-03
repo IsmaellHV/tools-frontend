@@ -95,9 +95,8 @@ a {
   text-decoration-color: var(--color-accent);
 }
 a:hover {
-  background: var(--color-accent);
-  color: var(--color-accent-fg);
-  text-decoration: none;
+  color: var(--color-accent);
+  text-decoration-thickness: 2px;
 }
 
 button {
