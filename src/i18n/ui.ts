@@ -23,6 +23,15 @@ export const ui = {
     'home.heroDot': '.',
     'home.heroLead': 'A small set of fast, private utilities. Everything runs locally in your browser — your data never leaves the page.',
 
+    'home.cat.encoding.title': 'Encoding',
+    'home.cat.encoding.body': 'Encode, decode and inspect text-based formats.',
+    'home.cat.security.title': 'Security',
+    'home.cat.security.body': 'Encrypt data and generate secure credentials.',
+    'home.cat.qr.title': 'QR codes',
+    'home.cat.qr.body': 'Generate and decode QR codes from text or images.',
+    'home.cat.data.title': 'Data',
+    'home.cat.data.body': 'Validate, format and convert structured data.',
+
     'home.cards.base64.title': 'Base64 — text',
     'home.cards.base64.body': 'Encode and decode UTF-8 text to and from Base64.',
     'home.cards.base64Image.title': 'Image ⇄ Base64',
@@ -240,6 +249,15 @@ export const ui = {
     'home.heroAccent': 'en tu navegador',
     'home.heroDot': '.',
     'home.heroLead': 'Un set pequeño de utilidades rápidas y privadas. Todo se ejecuta localmente — tus datos nunca salen de la página.',
+
+    'home.cat.encoding.title': 'Codificación',
+    'home.cat.encoding.body': 'Codifica, decodifica e inspecciona formatos de texto.',
+    'home.cat.security.title': 'Seguridad',
+    'home.cat.security.body': 'Cifra datos y genera credenciales seguras.',
+    'home.cat.qr.title': 'Códigos QR',
+    'home.cat.qr.body': 'Genera y decodifica códigos QR desde texto o imágenes.',
+    'home.cat.data.title': 'Datos',
+    'home.cat.data.body': 'Valida, formatea y convierte datos estructurados.',
 
     'home.cards.base64.title': 'Base64 — texto',
     'home.cards.base64.body': 'Codifica y decodifica texto UTF-8 a Base64 y viceversa.',
