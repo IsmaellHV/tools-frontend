@@ -6,9 +6,10 @@ interface Props {
   text: string;
   dict: Dict;
   className?: string;
+  style?: React.CSSProperties;
 }
 
-export default function CopyButton({ text, dict, className = 'btn' }: Props) {
+export default function CopyButton({ text, dict, className = 'btn', style }: Props) {
   const [state, setState] = useState<'idle' | 'ok' | 'err'>('idle');
 
   const onClick = async () => {
@@ -29,7 +30,7 @@ export default function CopyButton({ text, dict, className = 'btn' }: Props) {
         : pick(dict, 'ui.copy', 'Copy');
 
   return (
-    <button type="button" className={className} onClick={onClick} disabled={!text}>
+    <button type="button" className={className} onClick={onClick} disabled={!text} style={style}>
       {label}
     </button>
   );

@@ -19,7 +19,26 @@ const url = `${SITE}${Astro.url.pathname.replace(/\/$/, '')}`;
 const homePath = lang === 'en' ? withBase('/') : withBase('/es/');
 const jsonLd = buildToolJsonLd({ name: h1, description: lead, url, lang }, SITE, homePath);
 
-const dict = buildDict(lang, ['ui.copy', 'ui.copied', 'ui.copyFailed', 't.qrRead.drop', 't.qrRead.notFound', 't.qrRead.result'] as const);
+const dict = buildDict(lang, [
+  'ui.copy',
+  'ui.copied',
+  'ui.copyFailed',
+  'ui.paste',
+  't.qrRead.drop',
+  't.qrRead.notFound',
+  't.qrRead.result',
+  't.qrRead.pasteHint',
+  't.qrRead.pasteEmpty',
+  't.qrRead.pasteError',
+  't.qrRead.history',
+  't.qrRead.historyEmpty',
+  't.qrRead.clearHistory',
+  't.qrRead.remove',
+  't.qrRead.open',
+  't.qrRead.namePlaceholder',
+  't.qrRead.rename',
+  't.qrRead.untitled',
+] as const);
 ---
 
 <BaseLayout title={metaTitle} description={metaDesc} {keywords} {jsonLd}>
