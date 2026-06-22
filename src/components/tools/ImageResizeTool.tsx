@@ -100,7 +100,6 @@ export default function ImageResizeTool({ dict }: Props) {
     } finally {
       setWorking(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [file, origUrl, width, height, format, dict]);
 
   useEffect(() => {
