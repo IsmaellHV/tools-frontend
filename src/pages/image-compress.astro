@@ -1,0 +1,41 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ToolShell from '~/components/ToolShell.astro';
+import ImageCompressTool from '~/components/tools/ImageCompressTool';
+import { getLangFromUrl, useTranslations, withBase } from '~/i18n/utils';
+import { buildDict } from '~/lib/dict';
+import { buildToolJsonLd } from '~/lib/seo';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const h1 = t('t.imageCompress.title');
+const lead = t('t.imageCompress.lead');
+const metaTitle = t('seo.imageCompress.title');
+const metaDesc = t('seo.imageCompress.description');
+const keywords = t('seo.imageCompress.keywords');
+
+const SITE = (import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'https://ismaelhv.com').replace(/\/$/, '');
+const url = `${SITE}${Astro.url.pathname.replace(/\/$/, '')}`;
+const homePath = lang === 'en' ? withBase('/') : withBase('/es/');
+const jsonLd = buildToolJsonLd({ name: h1, description: lead, url, lang, category: 'MultimediaApplication' }, SITE, homePath);
+
+const dict = buildDict(lang, [
+  't.imageCompress.drop',
+  't.imageCompress.quality',
+  't.imageCompress.maxWidth',
+  't.imageCompress.format',
+  't.imageCompress.original',
+  't.imageCompress.compressed',
+  't.imageCompress.saved',
+  't.imageCompress.bigger',
+  't.imageCompress.download',
+  't.imageCompress.working',
+  't.imageCompress.error',
+] as const);
+---
+
+<BaseLayout title={metaTitle} description={metaDesc} {keywords} {jsonLd}>
+  <ToolShell title={h1} {lead}>
+    <ImageCompressTool client:only="react" dict={dict} />
+  </ToolShell>
+</BaseLayout>

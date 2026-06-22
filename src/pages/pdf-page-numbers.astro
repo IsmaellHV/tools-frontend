@@ -1,0 +1,40 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ToolShell from '~/components/ToolShell.astro';
+import PdfPageNumbersTool from '~/components/tools/PdfPageNumbersTool';
+import { getLangFromUrl, useTranslations, withBase } from '~/i18n/utils';
+import { buildDict } from '~/lib/dict';
+import { buildToolJsonLd } from '~/lib/seo';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const h1 = t('t.pdfPageNumbers.title');
+const lead = t('t.pdfPageNumbers.lead');
+const metaTitle = t('seo.pdfPageNumbers.title');
+const metaDesc = t('seo.pdfPageNumbers.description');
+const keywords = t('seo.pdfPageNumbers.keywords');
+
+const SITE = (import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'https://ismaelhv.com').replace(/\/$/, '');
+const url = `${SITE}${Astro.url.pathname.replace(/\/$/, '')}`;
+const homePath = lang === 'en' ? withBase('/') : withBase('/es/');
+const jsonLd = buildToolJsonLd({ name: h1, description: lead, url, lang, category: 'UtilitiesApplication' }, SITE, homePath);
+
+const dict = buildDict(lang, [
+  't.pdfPageNumbers.drop',
+  't.pdfPageNumbers.total',
+  't.pdfPageNumbers.position',
+  't.pdfPageNumbers.format',
+  't.pdfPageNumbers.start',
+  't.pdfPageNumbers.size',
+  't.pdfPageNumbers.rendering',
+  't.pdfPageNumbers.apply',
+  't.pdfPageNumbers.working',
+  't.pdfPageNumbers.error',
+] as const);
+---
+
+<BaseLayout title={metaTitle} description={metaDesc} {keywords} {jsonLd}>
+  <ToolShell title={h1} {lead}>
+    <PdfPageNumbersTool client:only="react" dict={dict} />
+  </ToolShell>
+</BaseLayout>

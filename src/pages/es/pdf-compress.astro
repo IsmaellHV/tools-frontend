@@ -1,0 +1,45 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ToolShell from '~/components/ToolShell.astro';
+import PdfCompressTool from '~/components/tools/PdfCompressTool';
+import { getLangFromUrl, useTranslations, withBase } from '~/i18n/utils';
+import { buildDict } from '~/lib/dict';
+import { buildToolJsonLd } from '~/lib/seo';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const h1 = t('t.pdfCompress.title');
+const lead = t('t.pdfCompress.lead');
+const metaTitle = t('seo.pdfCompress.title');
+const metaDesc = t('seo.pdfCompress.description');
+const keywords = t('seo.pdfCompress.keywords');
+
+const SITE = (import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'https://ismaelhv.com').replace(/\/$/, '');
+const url = `${SITE}${Astro.url.pathname.replace(/\/$/, '')}`;
+const homePath = lang === 'en' ? withBase('/') : withBase('/es/');
+const jsonLd = buildToolJsonLd({ name: h1, description: lead, url, lang, category: 'UtilitiesApplication' }, SITE, homePath);
+
+const dict = buildDict(lang, [
+  't.pdfCompress.drop',
+  't.pdfCompress.total',
+  't.pdfCompress.quality',
+  't.pdfCompress.resolution',
+  't.pdfCompress.resLow',
+  't.pdfCompress.resMed',
+  't.pdfCompress.resHigh',
+  't.pdfCompress.compress',
+  't.pdfCompress.working',
+  't.pdfCompress.original',
+  't.pdfCompress.result',
+  't.pdfCompress.saved',
+  't.pdfCompress.note',
+  't.pdfCompress.bigger',
+  't.pdfCompress.error',
+] as const);
+---
+
+<BaseLayout title={metaTitle} description={metaDesc} {keywords} {jsonLd}>
+  <ToolShell title={h1} {lead}>
+    <PdfCompressTool client:only="react" dict={dict} />
+  </ToolShell>
+</BaseLayout>

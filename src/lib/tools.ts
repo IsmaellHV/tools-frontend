@@ -1,6 +1,6 @@
 import type { UIKey } from '~/i18n/ui';
 
-export type ToolCategory = 'encoding' | 'security' | 'qr' | 'data';
+export type ToolCategory = 'encoding' | 'security' | 'qr' | 'data' | 'pdf' | 'image';
 
 export interface ToolMeta {
   slug: string; // e.g. 'base64'
@@ -21,6 +21,8 @@ export const CATEGORIES: readonly CategoryMeta[] = [
   { id: 'security', titleKey: 'home.cat.security.title', bodyKey: 'home.cat.security.body' },
   { id: 'qr', titleKey: 'home.cat.qr.title', bodyKey: 'home.cat.qr.body' },
   { id: 'data', titleKey: 'home.cat.data.title', bodyKey: 'home.cat.data.body' },
+  { id: 'pdf', titleKey: 'home.cat.pdf.title', bodyKey: 'home.cat.pdf.body' },
+  { id: 'image', titleKey: 'home.cat.image.title', bodyKey: 'home.cat.image.body' },
 ] as const;
 
 export const TOOLS: readonly ToolMeta[] = [
@@ -33,6 +35,16 @@ export const TOOLS: readonly ToolMeta[] = [
   { slug: 'qr-generate', titleKey: 'home.cards.qrGen.title', bodyKey: 'home.cards.qrGen.body', icon: 'QR↑', category: 'qr' },
   { slug: 'json', titleKey: 'home.cards.json.title', bodyKey: 'home.cards.json.body', icon: '{ }', category: 'data' },
   { slug: 'json-excel', titleKey: 'home.cards.jsonExcel.title', bodyKey: 'home.cards.jsonExcel.body', icon: 'XLS', category: 'data' },
+  { slug: 'pdf-merge', titleKey: 'home.cards.pdfMerge.title', bodyKey: 'home.cards.pdfMerge.body', icon: 'PDF', category: 'pdf' },
+  { slug: 'pdf-split', titleKey: 'home.cards.pdfSplit.title', bodyKey: 'home.cards.pdfSplit.body', icon: 'PDF', category: 'pdf' },
+  { slug: 'images-to-pdf', titleKey: 'home.cards.imagesToPdf.title', bodyKey: 'home.cards.imagesToPdf.body', icon: 'I→P', category: 'pdf' },
+  { slug: 'pdf-rotate', titleKey: 'home.cards.pdfRotate.title', bodyKey: 'home.cards.pdfRotate.body', icon: 'ROT', category: 'pdf' },
+  { slug: 'pdf-to-images', titleKey: 'home.cards.pdfToImages.title', bodyKey: 'home.cards.pdfToImages.body', icon: 'P→I', category: 'pdf' },
+  { slug: 'pdf-compress', titleKey: 'home.cards.pdfCompress.title', bodyKey: 'home.cards.pdfCompress.body', icon: 'PDF↓', category: 'pdf' },
+  { slug: 'pdf-page-numbers', titleKey: 'home.cards.pdfPageNumbers.title', bodyKey: 'home.cards.pdfPageNumbers.body', icon: '#', category: 'pdf' },
+  { slug: 'image-compress', titleKey: 'home.cards.imageCompress.title', bodyKey: 'home.cards.imageCompress.body', icon: 'IMG↓', category: 'image' },
+  { slug: 'image-convert', titleKey: 'home.cards.imageConvert.title', bodyKey: 'home.cards.imageConvert.body', icon: 'CNV', category: 'image' },
+  { slug: 'image-resize', titleKey: 'home.cards.imageResize.title', bodyKey: 'home.cards.imageResize.body', icon: 'RSZ', category: 'image' },
 ] as const;
 
 export function toolsByCategory(category: ToolCategory): ToolMeta[] {

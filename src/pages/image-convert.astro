@@ -1,0 +1,39 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ToolShell from '~/components/ToolShell.astro';
+import ImageConvertTool from '~/components/tools/ImageConvertTool';
+import { getLangFromUrl, useTranslations, withBase } from '~/i18n/utils';
+import { buildDict } from '~/lib/dict';
+import { buildToolJsonLd } from '~/lib/seo';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const h1 = t('t.imageConvert.title');
+const lead = t('t.imageConvert.lead');
+const metaTitle = t('seo.imageConvert.title');
+const metaDesc = t('seo.imageConvert.description');
+const keywords = t('seo.imageConvert.keywords');
+
+const SITE = (import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'https://ismaelhv.com').replace(/\/$/, '');
+const url = `${SITE}${Astro.url.pathname.replace(/\/$/, '')}`;
+const homePath = lang === 'en' ? withBase('/') : withBase('/es/');
+const jsonLd = buildToolJsonLd({ name: h1, description: lead, url, lang, category: 'MultimediaApplication' }, SITE, homePath);
+
+const dict = buildDict(lang, [
+  't.imageConvert.drop',
+  't.imageConvert.addMore',
+  't.imageConvert.to',
+  't.imageConvert.quality',
+  't.imageConvert.downloadAll',
+  't.imageConvert.download',
+  't.imageConvert.remove',
+  't.imageConvert.working',
+  't.imageConvert.error',
+] as const);
+---
+
+<BaseLayout title={metaTitle} description={metaDesc} {keywords} {jsonLd}>
+  <ToolShell title={h1} {lead}>
+    <ImageConvertTool client:only="react" dict={dict} />
+  </ToolShell>
+</BaseLayout>

@@ -1,0 +1,37 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ToolShell from '~/components/ToolShell.astro';
+import PdfRotateTool from '~/components/tools/PdfRotateTool';
+import { getLangFromUrl, useTranslations, withBase } from '~/i18n/utils';
+import { buildDict } from '~/lib/dict';
+import { buildToolJsonLd } from '~/lib/seo';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const h1 = t('t.pdfRotate.title');
+const lead = t('t.pdfRotate.lead');
+const metaTitle = t('seo.pdfRotate.title');
+const metaDesc = t('seo.pdfRotate.description');
+const keywords = t('seo.pdfRotate.keywords');
+
+const SITE = (import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'https://ismaelhv.com').replace(/\/$/, '');
+const url = `${SITE}${Astro.url.pathname.replace(/\/$/, '')}`;
+const homePath = lang === 'en' ? withBase('/') : withBase('/es/');
+const jsonLd = buildToolJsonLd({ name: h1, description: lead, url, lang, category: 'UtilitiesApplication' }, SITE, homePath);
+
+const dict = buildDict(lang, [
+  't.pdfRotate.drop',
+  't.pdfRotate.total',
+  't.pdfRotate.direction',
+  't.pdfRotate.apply',
+  't.pdfRotate.working',
+  't.pdfRotate.error',
+  't.pdfRotate.rendering',
+] as const);
+---
+
+<BaseLayout title={metaTitle} description={metaDesc} {keywords} {jsonLd}>
+  <ToolShell title={h1} {lead}>
+    <PdfRotateTool client:only="react" dict={dict} />
+  </ToolShell>
+</BaseLayout>

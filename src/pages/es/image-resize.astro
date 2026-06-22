@@ -1,0 +1,41 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ToolShell from '~/components/ToolShell.astro';
+import ImageResizeTool from '~/components/tools/ImageResizeTool';
+import { getLangFromUrl, useTranslations, withBase } from '~/i18n/utils';
+import { buildDict } from '~/lib/dict';
+import { buildToolJsonLd } from '~/lib/seo';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const h1 = t('t.imageResize.title');
+const lead = t('t.imageResize.lead');
+const metaTitle = t('seo.imageResize.title');
+const metaDesc = t('seo.imageResize.description');
+const keywords = t('seo.imageResize.keywords');
+
+const SITE = (import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'https://ismaelhv.com').replace(/\/$/, '');
+const url = `${SITE}${Astro.url.pathname.replace(/\/$/, '')}`;
+const homePath = lang === 'en' ? withBase('/') : withBase('/es/');
+const jsonLd = buildToolJsonLd({ name: h1, description: lead, url, lang, category: 'MultimediaApplication' }, SITE, homePath);
+
+const dict = buildDict(lang, [
+  't.imageResize.drop',
+  't.imageResize.width',
+  't.imageResize.height',
+  't.imageResize.lock',
+  't.imageResize.percent',
+  't.imageResize.format',
+  't.imageResize.original',
+  't.imageResize.result',
+  't.imageResize.download',
+  't.imageResize.working',
+  't.imageResize.error',
+] as const);
+---
+
+<BaseLayout title={metaTitle} description={metaDesc} {keywords} {jsonLd}>
+  <ToolShell title={h1} {lead}>
+    <ImageResizeTool client:only="react" dict={dict} />
+  </ToolShell>
+</BaseLayout>

@@ -1,0 +1,41 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ToolShell from '~/components/ToolShell.astro';
+import PdfMergeTool from '~/components/tools/PdfMergeTool';
+import { getLangFromUrl, useTranslations, withBase } from '~/i18n/utils';
+import { buildDict } from '~/lib/dict';
+import { buildToolJsonLd } from '~/lib/seo';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const h1 = t('t.pdfMerge.title');
+const lead = t('t.pdfMerge.lead');
+const metaTitle = t('seo.pdfMerge.title');
+const metaDesc = t('seo.pdfMerge.description');
+const keywords = t('seo.pdfMerge.keywords');
+
+const SITE = (import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'https://ismaelhv.com').replace(/\/$/, '');
+const url = `${SITE}${Astro.url.pathname.replace(/\/$/, '')}`;
+const homePath = lang === 'en' ? withBase('/') : withBase('/es/');
+const jsonLd = buildToolJsonLd({ name: h1, description: lead, url, lang, category: 'UtilitiesApplication' }, SITE, homePath);
+
+const dict = buildDict(lang, [
+  't.pdfMerge.drop',
+  't.pdfMerge.add',
+  't.pdfMerge.merge',
+  't.pdfMerge.working',
+  't.pdfMerge.need2',
+  't.pdfMerge.pages',
+  't.pdfMerge.remove',
+  't.pdfMerge.rotate',
+  't.pdfMerge.addMore',
+  't.pdfMerge.dragHint',
+  't.pdfMerge.error',
+] as const);
+---
+
+<BaseLayout title={metaTitle} description={metaDesc} {keywords} {jsonLd}>
+  <ToolShell title={h1} {lead}>
+    <PdfMergeTool client:only="react" dict={dict} />
+  </ToolShell>
+</BaseLayout>
