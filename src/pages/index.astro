@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import ToolCard from '~/components/ToolCard.astro';
 import { getLangFromUrl, useTranslations, withBase } from '~/i18n/utils';
 import { TOOLS, CATEGORIES, toolsByCategory } from '~/lib/tools';
 
@@ -12,18 +13,14 @@ const title = t('home.metaTitle');
 const description = t('home.metaDescription');
 const keywords =
   lang === 'en'
-    ? 'developer tools, online tools, base64, qr code, json viewer, json to excel, aes encrypt, jwt decoder, free dev utilities, in-browser tools'
-    : 'herramientas desarrollo, utilidades online, base64, codigo qr, visor json, json a excel, cifrar aes, decodificador jwt, dev tools gratis';
+    ? 'developer tools, online tools, base64, qr code, json viewer, json to excel, aes encrypt, jwt decoder, compare text, pdf tools, image tools, free dev utilities'
+    : 'herramientas desarrollo, utilidades online, base64, codigo qr, visor json, json a excel, cifrar aes, decodificador jwt, comparar texto, herramientas pdf, dev tools gratis';
 
 const langPrefix = lang === 'en' ? '' : '/es';
 const toolHref = (slug: string) => withBase(`${langPrefix}/${slug}`);
 const toolUrl = (slug: string) => `${SITE}${toolHref(slug)}`;
 const homeUrl = `${SITE}${withBase(langPrefix === '' ? '/' : '/es/')}`;
 
-const catTitleOf = (id: string): string => {
-  const c = CATEGORIES.find((x) => x.id === id);
-  return c ? t(c.titleKey) : id;
-};
 const visibleCats = CATEGORIES.filter((c) => toolsByCategory(c.id).length > 0);
 
 const jsonLd = [
@@ -58,33 +55,30 @@ const jsonLd = [
 ---
 
 <BaseLayout {title} {description} {keywords} {jsonLd}>
-  <section class="mb-10 grid gap-8 md:grid-cols-[1.5fr_1fr] md:items-center">
+  <section class="mb-7 grid gap-6 md:grid-cols-[1.6fr_1fr] md:items-center">
     <div>
-      <p class="tag mb-4">// {String(TOOLS.length).padStart(2, '0')} TOOLS · v1.0</p>
-      <h1 class="text-4xl leading-[0.95] md:text-6xl">
+      <p class="tag mb-3">// {String(TOOLS.length).padStart(2, '0')} TOOLS · v1.0</p>
+      <h1 class="text-3xl leading-[0.95] md:text-5xl">
         {t('home.heroPre')}<br />
         <span style="background: var(--color-accent); color: var(--color-accent-fg); padding: 0 0.3em; display: inline-block">
           {t('home.heroAccent')}
         </span>{t('home.heroDot')}
       </h1>
-      <p class="mt-5 max-w-xl text-base" style="color: var(--color-fg-muted)">
+      <p class="mt-4 max-w-xl text-sm" style="color: var(--color-fg-muted)">
         {t('home.heroLead')}
       </p>
     </div>
-    <div class="card" style="background: var(--color-bg-raised)">
-      <p class="label">/* MANIFESTO */</p>
-      <ul class="space-y-2 text-sm">
-        <li>→ Runs 100% in your browser</li>
-        <li>→ Zero uploads, zero tracking</li>
-        <li>→ Open source, MIT licensed</li>
-        <li>→ Bilingual (EN / ES)</li>
-      </ul>
-    </div>
+    <ul class="card space-y-1 text-xs" style="background: var(--color-bg-raised); padding: 0.9rem 1rem">
+      <li>→ {t('home.manifesto1')}</li>
+      <li>→ {t('home.manifesto2')}</li>
+      <li>→ {t('home.manifesto3')}</li>
+      <li>→ {t('home.manifesto4')}</li>
+    </ul>
   </section>
 
   <div class="divider"></div>
 
-  <div class="mb-6 flex flex-col gap-4">
+  <div class="mb-6 flex flex-col gap-3">
     <div class="flex items-stretch gap-3">
       <div style="position: relative; flex: 1; display: flex; align-items: center">
         <span aria-hidden="true" style="position: absolute; left: 0.7rem; color: var(--color-fg-muted); font-family: var(--font-mono); pointer-events: none">⌕</span>
@@ -94,8 +88,9 @@ const jsonLd = [
           autocomplete="off"
           placeholder={t('home.searchPlaceholder')}
           aria-label={t('home.searchPlaceholder')}
-          style="padding-left: 2rem"
+          style="padding-left: 2rem; padding-right: 2.6rem"
         />
+        <span class="kbd" id="search-hint" aria-hidden="true" style="position: absolute; right: 0.6rem; pointer-events: none">/</span>
       </div>
       <div class="tag" style="display: flex; align-items: center; white-space: nowrap">
         <span id="tool-count" style="color: var(--color-accent); font-weight: 700">{TOOLS.length}</span>&nbsp;/ {TOOLS.length} {t('home.toolsLabel')}
@@ -116,31 +111,37 @@ const jsonLd = [
     </div>
   </div>
 
-  <div id="tool-grid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+  <section id="recent-section" class="mb-8" hidden>
+    <div class="sec-head">
+      <h2 class="label" style="margin-bottom: 0">// {t('home.recent')}</h2>
+      <button type="button" id="recent-clear" class="sec-link">{t('home.recentClear')} ✕</button>
+    </div>
+    <div id="recent-grid" class="tool-grid"></div>
+  </section>
+
+  <div id="tool-sections">
     {
-      TOOLS.map((tool) => {
-        const name = t(tool.titleKey);
-        const body = t(tool.bodyKey);
-        const cat = catTitleOf(tool.category);
-        return (
-          <a
-            href={toolHref(tool.slug)}
-            class="tile group"
-            data-cat={tool.category}
-            data-search={`${name} ${tool.slug} ${body} ${cat}`.toLowerCase()}
-          >
-            <div class="mb-3 flex items-start justify-between">
-              <span class="tag" style="background: var(--color-bg-raised)">{cat}</span>
-              <span class="tag" style="background: var(--color-accent); color: var(--color-accent-fg); border-color: var(--color-border-strong)">
-                {tool.icon}
-              </span>
-            </div>
-            <h3 class="mb-1 text-lg">{name}</h3>
-            <p class="text-sm" style="color: var(--color-fg-muted)">{body}</p>
-            <p class="mt-3 font-mono text-xs" style="color: var(--color-accent)">→ /{tool.slug}</p>
-          </a>
-        );
-      })
+      visibleCats.map((cat) => (
+        <section class="cat-section mb-8" data-section={cat.id}>
+          <div class="sec-head">
+            <h2 class="label" style="margin-bottom: 0">// {t(cat.titleKey)}</h2>
+            <p class="sec-desc">{t(cat.bodyKey)}</p>
+            <span class="font-mono text-xs" style="color: var(--color-fg-muted)">{toolsByCategory(cat.id).length}</span>
+          </div>
+          <div class="tool-grid">
+            {toolsByCategory(cat.id).map((tool) => (
+              <ToolCard
+                slug={tool.slug}
+                href={toolHref(tool.slug)}
+                name={t(tool.titleKey)}
+                body={t(tool.bodyKey)}
+                cat={t(cat.titleKey)}
+                catId={cat.id}
+              />
+            ))}
+          </div>
+        </section>
+      ))
     }
   </div>
 
@@ -175,30 +176,76 @@ const jsonLd = [
   .chip.is-active .chip-n {
     color: var(--color-accent-fg);
   }
+
 </style>
 
 <script>
-  const grid = document.getElementById('tool-grid');
-  const tiles = Array.from(grid?.querySelectorAll<HTMLElement>('.tile') ?? []);
+  const RECENT_KEY = 'tools_recent';
+  const RECENT_MAX = 3; // una fila exacta en la grilla de 3 columnas
+
+  const sections = Array.from(document.querySelectorAll<HTMLElement>('.cat-section'));
   const chips = Array.from(document.querySelectorAll<HTMLElement>('#tool-chips .chip'));
   const search = document.getElementById('tool-search') as HTMLInputElement | null;
+  const hint = document.getElementById('search-hint');
   const countEl = document.getElementById('tool-count');
   const emptyEl = document.getElementById('tool-empty');
+  const recentSection = document.getElementById('recent-section') as HTMLElement | null;
+  const recentGrid = document.getElementById('recent-grid');
 
   let activeCat = 'all';
   let q = '';
 
+  const tileOf = (slug: string) => document.querySelector<HTMLElement>(`.tool-tile[data-slug="${CSS.escape(slug)}"]`);
+
+  const readRecent = (): string[] => {
+    try {
+      const raw = JSON.parse(localStorage.getItem(RECENT_KEY) || '[]');
+      return Array.isArray(raw) ? raw.filter((s): s is string => typeof s === 'string' && !!tileOf(s)) : [];
+    } catch {
+      return [];
+    }
+  };
+
+  const renderRecent = () => {
+    if (!recentGrid || !recentSection) return;
+    const slugs = readRecent().slice(0, RECENT_MAX);
+    // Solo tiene sentido como atajo: si no hay nada guardado, la sección no existe.
+    if (!slugs.length) {
+      recentSection.hidden = true;
+      recentGrid.replaceChildren();
+      return;
+    }
+    // Se clona la tarjeta ya renderizada para heredar el CSS scoped de Astro.
+    recentGrid.replaceChildren(
+      ...slugs.map((slug) => {
+        const clone = tileOf(slug)!.cloneNode(true) as HTMLElement;
+        clone.style.display = '';
+        clone.removeAttribute('data-slug');
+        return clone;
+      }),
+    );
+    recentSection.hidden = false;
+  };
+
   const apply = () => {
     let shown = 0;
-    for (const el of tiles) {
-      const okCat = activeCat === 'all' || el.dataset.cat === activeCat;
-      const okQ = !q || (el.dataset.search ?? '').includes(q);
-      const show = okCat && okQ;
-      el.style.display = show ? '' : 'none';
-      if (show) shown++;
+    for (const section of sections) {
+      const tiles = Array.from(section.querySelectorAll<HTMLElement>('.tool-tile'));
+      let visibleHere = 0;
+      for (const el of tiles) {
+        const okCat = activeCat === 'all' || el.dataset.cat === activeCat;
+        const okQ = !q || (el.dataset.search ?? '').includes(q);
+        const show = okCat && okQ;
+        el.style.display = show ? '' : 'none';
+        if (show) visibleHere++;
+      }
+      section.hidden = visibleHere === 0;
+      shown += visibleHere;
     }
     if (countEl) countEl.textContent = String(shown);
     if (emptyEl) emptyEl.style.display = shown ? 'none' : 'block';
+    // Con filtro activo la fila de recientes estorba más de lo que ayuda.
+    if (recentSection && !recentSection.hidden) recentSection.style.display = q || activeCat !== 'all' ? 'none' : '';
   };
 
   for (const c of chips) {
@@ -215,6 +262,33 @@ const jsonLd = [
 
   search?.addEventListener('input', () => {
     q = (search.value || '').trim().toLowerCase();
+    if (hint) hint.style.display = q ? 'none' : '';
     apply();
   });
+
+  // "/" enfoca el buscador; Escape limpia y suelta el foco.
+  document.addEventListener('keydown', (e) => {
+    const target = e.target as HTMLElement | null;
+    const typing = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable);
+    if (e.key === '/' && !typing && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      search?.focus();
+      search?.select();
+    } else if (e.key === 'Escape' && target === search && search) {
+      search.value = '';
+      q = '';
+      if (hint) hint.style.display = '';
+      apply();
+      search.blur();
+    }
+  });
+
+  document.getElementById('recent-clear')?.addEventListener('click', () => {
+    localStorage.removeItem(RECENT_KEY);
+    renderRecent();
+    apply();
+  });
+
+  renderRecent();
+  apply();
 </script>

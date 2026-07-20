@@ -48,3 +48,21 @@ const gateDict = buildDict(lang, ['gate.title', 'gate.body', 'gate.unlocked', 'g
 </section>
 
 <span class="sr-only">{t('nav.toggleLang')}</span>
+
+<script>
+  // Registra la herramienta visitada para la fila "usadas recientemente" del home.
+  // Solo guarda slugs, en este navegador; nada sale de la página.
+  const RECENT_KEY = 'tools_recent';
+  const RECENT_MAX = 8;
+  const slug = window.location.pathname.replace(/\/$/, '').split('/').pop();
+
+  if (slug) {
+    try {
+      const raw = JSON.parse(localStorage.getItem(RECENT_KEY) || '[]');
+      const prev: string[] = Array.isArray(raw) ? raw.filter((s: unknown): s is string => typeof s === 'string') : [];
+      localStorage.setItem(RECENT_KEY, JSON.stringify([slug, ...prev.filter((s) => s !== slug)].slice(0, RECENT_MAX)));
+    } catch {
+      // localStorage bloqueado (modo privado / cookies off): la home simplemente no mostrará recientes.
+    }
+  }
+</script>

@@ -1,0 +1,25 @@
+---
+import ToolIcon from '~/components/ToolIcon.astro';
+
+interface Props {
+  slug: string;
+  href: string;
+  name: string;
+  body: string;
+  cat: string; // nombre traducido de la categoría, solo para el índice de búsqueda
+  catId: string; // id de categoría, lo usa el filtro por chips del home
+}
+
+const { slug, href, name, body, cat, catId } = Astro.props;
+const search = `${name} ${slug} ${body} ${cat}`.toLowerCase();
+---
+
+<a href={href} class="tile tool-tile" data-slug={slug} data-cat={catId} data-search={search}>
+  <span class="tile-icon">
+    <ToolIcon slug={slug} />
+  </span>
+  <span class="tile-body">
+    <span class="tile-title">{name}</span>
+    <span class="tile-desc">{body}</span>
+  </span>
+</a>

@@ -212,6 +212,110 @@ textarea {
   text-decoration: none;
 }
 
+/* Grilla + tarjeta de herramienta: compartidas por el home y las páginas de categoría. */
+.tool-grid {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .tool-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .tool-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.tool-tile {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem 0.95rem;
+}
+.tile-icon {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-raised);
+  color: var(--color-accent);
+  border: 2px solid var(--color-border-strong);
+}
+.tool-tile:hover .tile-icon {
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+}
+.tile-body {
+  min-width: 0;
+  display: block;
+}
+.tile-title {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.25;
+  margin-bottom: 0.15rem;
+}
+.tile-desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: var(--color-fg-muted);
+}
+
+/* Cabecera de sección / categoría */
+.sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--color-border-strong);
+  margin-bottom: 0.6rem;
+}
+.sec-desc {
+  flex: 1;
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--color-fg-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: none;
+}
+@media (min-width: 768px) {
+  .sec-desc {
+    display: block;
+  }
+}
+.sec-link {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-fg-muted);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.sec-link:hover {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
 .label {
   display: block;
   font-family: var(--font-display);
