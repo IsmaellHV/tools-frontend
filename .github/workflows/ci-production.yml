@@ -1,9 +1,14 @@
-name: DEPLOY-PRODUCTION
+name: CI-PRODUCTION
 
 on:
   push:
     branches:
       - production
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
@@ -18,11 +23,10 @@ jobs:
           fetch-depth: 0
 
       - name: Set up Node.js
-        run: |
-          curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-          sudo apt-get install -y nodejs
-          node -v
-          npm -v
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
       - name: Create env file
         env:
@@ -41,7 +45,7 @@ jobs:
       - name: Run typecheck
         run: npm run typecheck
 
-      - name: Build Astro App
+      - name: Build App
         run: npm run build
 
       - name: Git Semantic Version
