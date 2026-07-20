@@ -1,6 +1,6 @@
 import type { UIKey } from '~/i18n/ui';
 
-export type ToolCategory = 'encoding' | 'security' | 'qr' | 'data' | 'pdf' | 'image';
+export type ToolCategory = 'encoding' | 'security' | 'qr' | 'data' | 'text' | 'pdf' | 'image';
 
 export interface ToolMeta {
   slug: string; // e.g. 'base64'
@@ -21,6 +21,7 @@ export const CATEGORIES: readonly CategoryMeta[] = [
   { id: 'security', titleKey: 'home.cat.security.title', bodyKey: 'home.cat.security.body' },
   { id: 'qr', titleKey: 'home.cat.qr.title', bodyKey: 'home.cat.qr.body' },
   { id: 'data', titleKey: 'home.cat.data.title', bodyKey: 'home.cat.data.body' },
+  { id: 'text', titleKey: 'home.cat.text.title', bodyKey: 'home.cat.text.body' },
   { id: 'pdf', titleKey: 'home.cat.pdf.title', bodyKey: 'home.cat.pdf.body' },
   { id: 'image', titleKey: 'home.cat.image.title', bodyKey: 'home.cat.image.body' },
 ] as const;
@@ -35,6 +36,7 @@ export const TOOLS: readonly ToolMeta[] = [
   { slug: 'qr-generate', titleKey: 'home.cards.qrGen.title', bodyKey: 'home.cards.qrGen.body', icon: 'QR↑', category: 'qr' },
   { slug: 'json', titleKey: 'home.cards.json.title', bodyKey: 'home.cards.json.body', icon: '{ }', category: 'data' },
   { slug: 'json-excel', titleKey: 'home.cards.jsonExcel.title', bodyKey: 'home.cards.jsonExcel.body', icon: 'XLS', category: 'data' },
+  { slug: 'text-diff', titleKey: 'home.cards.textDiff.title', bodyKey: 'home.cards.textDiff.body', icon: 'DIF', category: 'text' },
   { slug: 'pdf-merge', titleKey: 'home.cards.pdfMerge.title', bodyKey: 'home.cards.pdfMerge.body', icon: 'PDF', category: 'pdf' },
   { slug: 'pdf-split', titleKey: 'home.cards.pdfSplit.title', bodyKey: 'home.cards.pdfSplit.body', icon: 'PDF', category: 'pdf' },
   { slug: 'images-to-pdf', titleKey: 'home.cards.imagesToPdf.title', bodyKey: 'home.cards.imagesToPdf.body', icon: 'I→P', category: 'pdf' },
