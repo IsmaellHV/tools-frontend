@@ -35,6 +35,60 @@ export const ui = {
     'home.manifesto3': 'Open source, MIT licensed',
     'home.manifesto4': 'Bilingual (EN / ES)',
 
+    'home.viewAll': 'Category page',
+    'cat.backHome': 'All tools',
+    'cat.otherCats': 'Other categories',
+    'cat.toolCount': 'tools in this category',
+
+    'seo.cat.encoding.title': 'Free Online Encoding Tools — Base64, JWT, Image to Base64 · No Upload',
+    'seo.cat.encoding.description':
+      'Encode and decode data in your browser: Base64 text, image to Base64 data URL, JWT decoder. Everything runs client-side, nothing is uploaded.',
+    'seo.cat.encoding.keywords': 'encoding tools, base64 encoder, base64 decoder, jwt decoder, image to base64, online encoding tools free',
+    'cat.encoding.intro':
+      'Encoding tools turn data from one representation into another so it can travel safely through text-only channels. All of these run inside your browser tab — the text or image you paste never reaches a server.',
+
+    'seo.cat.security.title': 'Free Online Security Tools — AES Encryption, Password Generator · No Upload',
+    'seo.cat.security.description':
+      'Encrypt and decrypt text with AES and generate strong random passwords, entirely in your browser. Keys and passphrases never leave your device.',
+    'seo.cat.security.keywords': 'security tools, aes encrypt online, aes decrypt, password generator, strong password, encryption tools free',
+    'cat.security.intro':
+      'These tools use the browser Web Crypto API, so your passphrase, plaintext and generated passwords stay on your machine. Nothing is transmitted, logged or stored.',
+
+    'seo.cat.qr.title': 'Free Online QR Code Tools — Reader and Generator · No Upload',
+    'seo.cat.qr.description':
+      'Generate a QR code for any text or URL, and decode QR codes from an image, right in your browser. No upload, no watermark, no signup.',
+    'seo.cat.qr.keywords': 'qr code tools, qr generator free, qr reader online, decode qr from image, qr code no upload',
+    'cat.qr.intro':
+      'Generate QR codes for links, Wi-Fi credentials or plain text, and read codes back from a screenshot or photo. The image is decoded in the page — it is never uploaded.',
+
+    'seo.cat.data.title': 'Free Online Data Tools — JSON Viewer, JSON to Excel · No Upload',
+    'seo.cat.data.description':
+      'Validate, format and explore JSON as a collapsible tree, and export a JSON array to an .xlsx spreadsheet. Runs entirely in your browser.',
+    'seo.cat.data.keywords': 'data tools, json viewer, json formatter, json validator, json to excel, json to xlsx free',
+    'cat.data.intro':
+      'Inspect and convert structured data without pasting it into a third-party server. Useful when the payload contains tokens, customer records or anything you would rather not upload.',
+
+    'seo.cat.text.title': 'Free Online Text Tools — Compare Two Texts, Diff Checker · No Upload',
+    'seo.cat.text.description':
+      'Compare two texts and see every difference highlighted by line and by word, in your browser. Side-by-side or inline view. Nothing is uploaded.',
+    'seo.cat.text.keywords': 'text tools, compare text online, diff checker free, difference between two texts, text comparison no upload',
+    'cat.text.intro':
+      'Plain-text utilities that work on whatever you paste — contracts, logs, code or translations. The comparison happens in the page, so confidential drafts stay private.',
+
+    'seo.cat.pdf.title': 'Free Online PDF Tools — Merge, Split, Rotate, Compress · No Upload',
+    'seo.cat.pdf.description':
+      'Seven free PDF tools that run in your browser: merge, split, rotate, compress, add page numbers, images to PDF and PDF to images. No upload, no watermark, no signup.',
+    'seo.cat.pdf.keywords': 'pdf tools, merge pdf, split pdf, compress pdf, rotate pdf, pdf to images, add page numbers pdf, free pdf tools no upload',
+    'cat.pdf.intro':
+      'Every PDF tool here works with pdf-lib inside your browser tab. Contracts, invoices and scans are processed on your own machine — no upload, no queue, no watermark, and no file size limit beyond your available memory.',
+
+    'seo.cat.image.title': 'Free Online Image Tools — Compress, Convert, Resize · No Upload',
+    'seo.cat.image.description':
+      'Compress, convert and resize images in your browser. JPG, PNG and WebP, batch processing and ZIP download. No upload, no watermark, private.',
+    'seo.cat.image.keywords': 'image tools, compress image, convert image, resize image, jpg to webp, png to jpg, image tools no upload',
+    'cat.image.intro':
+      'Image processing runs on the HTML canvas in your browser, so photos and screenshots never leave your device. Batch several files at once and download them as a ZIP.',
+
     'home.cat.encoding.title': 'Encoding',
     'home.cat.encoding.body': 'Encode, decode and inspect text-based formats.',
     'home.cat.security.title': 'Security',
@@ -531,6 +585,60 @@ export const ui = {
     'home.manifesto2': 'Cero subidas, cero rastreo',
     'home.manifesto3': 'Código abierto, licencia MIT',
     'home.manifesto4': 'Bilingüe (EN / ES)',
+
+    'home.viewAll': 'Ver categoría',
+    'cat.backHome': 'Todas las herramientas',
+    'cat.otherCats': 'Otras categorías',
+    'cat.toolCount': 'herramientas en esta categoría',
+
+    'seo.cat.encoding.title': 'Herramientas de Codificación Online Gratis — Base64, JWT · Sin Subir Nada',
+    'seo.cat.encoding.description':
+      'Codifica y decodifica datos en tu navegador: texto Base64, imagen a data URL Base64, decodificador JWT. Todo corre del lado del cliente, no se sube nada.',
+    'seo.cat.encoding.keywords': 'herramientas codificación, codificar base64, decodificar base64, decodificador jwt, imagen a base64, sin subir',
+    'cat.encoding.intro':
+      'Las herramientas de codificación convierten datos de una representación a otra para que viajen seguros por canales de solo texto. Todas corren dentro de tu navegador — el texto o la imagen que pegas nunca llega a un servidor.',
+
+    'seo.cat.security.title': 'Herramientas de Seguridad Online Gratis — Cifrado AES, Contraseñas · Sin Subir',
+    'seo.cat.security.description':
+      'Cifra y descifra texto con AES y genera contraseñas aleatorias seguras, todo en tu navegador. Las claves nunca salen de tu dispositivo.',
+    'seo.cat.security.keywords': 'herramientas seguridad, cifrar aes online, descifrar aes, generador de contraseñas, contraseña segura, gratis',
+    'cat.security.intro':
+      'Estas herramientas usan la Web Crypto API del navegador, así que tu clave, tu texto y las contraseñas generadas se quedan en tu máquina. Nada se transmite, registra ni almacena.',
+
+    'seo.cat.qr.title': 'Herramientas de Códigos QR Online Gratis — Lector y Generador · Sin Subir',
+    'seo.cat.qr.description':
+      'Genera un código QR para cualquier texto o URL, y decodifica códigos QR desde una imagen, en tu navegador. Sin subir nada, sin marca de agua, sin registro.',
+    'seo.cat.qr.keywords': 'herramientas qr, generador qr gratis, lector qr online, decodificar qr desde imagen, qr sin subir',
+    'cat.qr.intro':
+      'Genera códigos QR para enlaces, credenciales Wi-Fi o texto plano, y vuelve a leerlos desde una captura o foto. La imagen se decodifica en la página — nunca se sube.',
+
+    'seo.cat.data.title': 'Herramientas de Datos Online Gratis — Visor JSON, JSON a Excel · Sin Subir',
+    'seo.cat.data.description':
+      'Valida, formatea y explora JSON como árbol colapsable, y exporta un arreglo JSON a una hoja .xlsx. Todo corre en tu navegador.',
+    'seo.cat.data.keywords': 'herramientas datos, visor json, formatear json, validar json, json a excel, json a xlsx gratis',
+    'cat.data.intro':
+      'Inspecciona y convierte datos estructurados sin pegarlos en un servidor ajeno. Útil cuando el payload trae tokens, datos de clientes o cualquier cosa que prefieras no subir.',
+
+    'seo.cat.text.title': 'Herramientas de Texto Online Gratis — Comparar Dos Textos · Sin Subir',
+    'seo.cat.text.description':
+      'Compara dos textos y ve cada diferencia resaltada por línea y por palabra, en tu navegador. Vista lado a lado o en línea. No se sube nada.',
+    'seo.cat.text.keywords': 'herramientas de texto, comparar texto online, comparar dos textos, diferencias entre textos, sin subir',
+    'cat.text.intro':
+      'Utilidades de texto plano que funcionan con lo que pegues: contratos, logs, código o traducciones. La comparación ocurre en la página, así que los borradores confidenciales siguen siendo privados.',
+
+    'seo.cat.pdf.title': 'Herramientas PDF Online Gratis — Unir, Dividir, Rotar, Comprimir · Sin Subir',
+    'seo.cat.pdf.description':
+      'Siete herramientas PDF gratis que corren en tu navegador: unir, dividir, rotar, comprimir, numerar páginas, imágenes a PDF y PDF a imágenes. Sin subir, sin marca de agua, sin registro.',
+    'seo.cat.pdf.keywords': 'herramientas pdf, unir pdf, dividir pdf, comprimir pdf, rotar pdf, pdf a imágenes, numerar páginas pdf, pdf gratis sin subir',
+    'cat.pdf.intro':
+      'Cada herramienta PDF trabaja con pdf-lib dentro de tu navegador. Contratos, facturas y escaneos se procesan en tu propia máquina — sin subir, sin cola, sin marca de agua y sin más límite de tamaño que tu memoria disponible.',
+
+    'seo.cat.image.title': 'Herramientas de Imagen Online Gratis — Comprimir, Convertir, Redimensionar · Sin Subir',
+    'seo.cat.image.description':
+      'Comprime, convierte y redimensiona imágenes en tu navegador. JPG, PNG y WebP, por lote y descarga en ZIP. Sin subir nada, sin marca de agua, privado.',
+    'seo.cat.image.keywords': 'herramientas imagen, comprimir imagen, convertir imagen, redimensionar imagen, jpg a webp, png a jpg, sin subir',
+    'cat.image.intro':
+      'El procesamiento de imágenes corre sobre el canvas HTML de tu navegador, así que fotos y capturas nunca salen de tu dispositivo. Procesa varios archivos a la vez y descárgalos en un ZIP.',
 
     'home.cat.encoding.title': 'Codificación',
     'home.cat.encoding.body': 'Codifica, decodifica e inspecciona formatos de texto.',

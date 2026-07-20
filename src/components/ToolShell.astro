@@ -2,6 +2,7 @@
 import CaptchaGate from '~/components/CaptchaGate.tsx';
 import { getLangFromUrl, useTranslations, withBase } from '~/i18n/utils';
 import { buildDict } from '~/lib/dict';
+import { CATEGORIES, TOOLS } from '~/lib/tools';
 
 interface Props {
   title: string;
@@ -13,13 +14,28 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const homeHref = lang === 'en' ? withBase('/') : withBase('/es/');
 
+// Enlace a la categoría de esta herramienta, deducido del slug de la URL.
+const slug = Astro.url.pathname.replace(/\/$/, '').split('/').pop() ?? '';
+const tool = TOOLS.find((x) => x.slug === slug);
+const cat = tool ? CATEGORIES.find((c) => c.id === tool.category) : undefined;
+const catHref = cat ? withBase(`${lang === 'en' ? '' : '/es'}/${cat.id}`) : '';
+
 const SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
 
 const gateDict = buildDict(lang, ['gate.title', 'gate.body', 'gate.unlocked', 'gate.failed', 'gate.retry'] as const);
 ---
 
 <section>
-  <a href={homeHref} class="tag mb-4 inline-block" style="text-decoration: none">← {t('nav.home')}</a>
+  <nav class="mb-4 flex flex-wrap items-center gap-2">
+    <a href={homeHref} class="tag" style="text-decoration: none">← {t('nav.home')}</a>
+    {
+      cat && (
+        <a href={catHref} class="tag" style="text-decoration: none">
+          {t(cat.titleKey)}
+        </a>
+      )
+    }
+  </nav>
 
   <header class="mb-8" style="border-bottom: 4px solid var(--color-border-strong); padding-bottom: 1.5rem">
     <h1 class="text-4xl md:text-5xl">{title}</h1>

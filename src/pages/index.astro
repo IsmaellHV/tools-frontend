@@ -18,6 +18,7 @@ const keywords =
 
 const langPrefix = lang === 'en' ? '' : '/es';
 const toolHref = (slug: string) => withBase(`${langPrefix}/${slug}`);
+const catHref = (id: string) => withBase(`${langPrefix}/${id}`);
 const toolUrl = (slug: string) => `${SITE}${toolHref(slug)}`;
 const homeUrl = `${SITE}${withBase(langPrefix === '' ? '/' : '/es/')}`;
 
@@ -126,7 +127,7 @@ const jsonLd = [
           <div class="sec-head">
             <h2 class="label" style="margin-bottom: 0">// {t(cat.titleKey)}</h2>
             <p class="sec-desc">{t(cat.bodyKey)}</p>
-            <span class="font-mono text-xs" style="color: var(--color-fg-muted)">{toolsByCategory(cat.id).length}</span>
+            <a class="sec-link" href={catHref(cat.id)}>{t('home.viewAll')} →</a>
           </div>
           <div class="tool-grid">
             {toolsByCategory(cat.id).map((tool) => (

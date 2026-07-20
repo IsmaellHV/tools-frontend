@@ -52,3 +52,11 @@ export function toolsByCategory(category: ToolCategory): ToolMeta[] {
   return TOOLS.filter((t) => t.category === category);
 }
 
+// Las páginas de categoría viven en la misma raíz que las herramientas (/pdf y /pdf-merge),
+// así que un slug de tool igual a un id de categoría generaría dos páginas en la misma ruta.
+// Preferimos romper el build a publicar una ruta duplicada.
+{
+  const slugs = new Set(TOOLS.map((t) => t.slug));
+  const clash = CATEGORIES.find((c) => slugs.has(c.id));
+  if (clash) throw new Error(`Route collision: category "${clash.id}" has the same slug as a tool. Rename one of them.`);
+}
