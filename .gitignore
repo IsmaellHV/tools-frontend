@@ -7,3 +7,10 @@ dist
 .env.*.local
 .astro
 *.log
+
+# Entorno: nada real se versiona, solo la plantilla.
+# Va al final a proposito: en .gitignore gana la ultima regla que casa, asi
+# que este bloque anula cualquier "*.env.*" anterior que tapase el example.
+.env*
+*.env
+!.env.example
