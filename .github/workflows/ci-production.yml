@@ -25,7 +25,9 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          # Astro 6 exige Node >= 22.12.0. Con la 20 el paso `astro check`
+          # falla antes de compilar, y el error no menciona a Astro.
+          node-version: '22'
           cache: 'npm'
 
       - name: Create env file
