@@ -177,11 +177,16 @@ export default function PdfImageTool({ dict }: Props) {
       setPages(pr);
       pagesRef.current = pr;
       resetForNewPdf();
-    } catch {
+    } catch (err) {
       setFile(null);
       setTotal(0);
       setPages([]);
       pagesRef.current = [];
+      // El motivo real va a la consola. Aquí no solo caen PDFs dañados: si el
+      // worker de pdf.js no carga (por ejemplo servido con un MIME que el
+      // navegador rechaza) el fallo aterriza igual en este catch, y sin este
+      // registro el usuario solo ve "PDF dañado" sobre un PDF perfectamente sano.
+      console.error('pdf-image: no se pudo renderizar el PDF:', err);
       setError(pick(dict, 't.pdfImage.error', 'Could not read this PDF (it may be encrypted or corrupt).'));
     } finally {
       setRendering(false);
