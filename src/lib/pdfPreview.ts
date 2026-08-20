@@ -76,6 +76,39 @@ export async function renderPage(data: ArrayBuffer, page: number, width = 480): 
   }
 }
 
+// Renderiza TODAS las páginas (hasta `max`) a un ancho fijo, con su tamaño real
+// en puntos. Lo usa el insertor de imágenes para apilar el documento completo y
+// colocar la imagen en coordenadas que coincidan con las que verá pdf-lib.
+export async function renderPages(
+  data: ArrayBuffer,
+  opts?: { width?: number; max?: number },
+): Promise<{ total: number; rendered: number; pages: PageRender[] }> {
+  const width = opts?.width ?? 520;
+  const max = opts?.max ?? 50;
+  const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(data.slice(0)) });
+  const pdf = await loadingTask.promise;
+  const total = pdf.numPages;
+  const count = Math.min(total, max);
+  const pages: PageRender[] = [];
+  try {
+    for (let i = 1; i <= count; i++) {
+      const p = await pdf.getPage(i);
+      const base = p.getViewport({ scale: 1 });
+      const viewport = p.getViewport({ scale: width / base.width });
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.ceil(viewport.width);
+      canvas.height = Math.ceil(viewport.height);
+      const ctx = canvas.getContext('2d');
+      if (!ctx) continue;
+      await p.render({ canvas, canvasContext: ctx, viewport }).promise;
+      pages.push({ url: canvas.toDataURL('image/jpeg', 0.82), widthPt: base.width, heightPt: base.height });
+    }
+  } finally {
+    await loadingTask.destroy();
+  }
+  return { total, rendered: pages.length, pages };
+}
+
 export interface PdfPageImage {
   page: number;
   url: string; // objectURL para mostrar/descargar
