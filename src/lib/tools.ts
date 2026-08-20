@@ -43,6 +43,7 @@ export const TOOLS: readonly ToolMeta[] = [
   { slug: 'pdf-to-images', titleKey: 'home.cards.pdfToImages.title', bodyKey: 'home.cards.pdfToImages.body', category: 'pdf' },
   { slug: 'pdf-compress', titleKey: 'home.cards.pdfCompress.title', bodyKey: 'home.cards.pdfCompress.body', category: 'pdf' },
   { slug: 'pdf-page-numbers', titleKey: 'home.cards.pdfPageNumbers.title', bodyKey: 'home.cards.pdfPageNumbers.body', category: 'pdf' },
+  { slug: 'pdf-image', titleKey: 'home.cards.pdfImage.title', bodyKey: 'home.cards.pdfImage.body', category: 'pdf' },
   { slug: 'image-compress', titleKey: 'home.cards.imageCompress.title', bodyKey: 'home.cards.imageCompress.body', category: 'image' },
   { slug: 'image-convert', titleKey: 'home.cards.imageConvert.title', bodyKey: 'home.cards.imageConvert.body', category: 'image' },
   { slug: 'image-resize', titleKey: 'home.cards.imageResize.title', bodyKey: 'home.cards.imageResize.body', category: 'image' },

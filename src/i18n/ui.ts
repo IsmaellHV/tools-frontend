@@ -50,7 +50,8 @@ export const ui = {
     'seo.cat.security.title': 'Free Online Security Tools — AES Encryption, Password Generator · No Upload',
     'seo.cat.security.description':
       'Encrypt and decrypt text with AES and generate strong random passwords, entirely in your browser. Keys and passphrases never leave your device.',
-    'seo.cat.security.keywords': 'security tools, aes encrypt online, aes decrypt, password generator, strong password, encryption tools free',
+    'seo.cat.security.keywords':
+      'security tools, aes encrypt online, aes decrypt, password generator, strong password, encryption tools free',
     'cat.security.intro':
       'These tools use the browser Web Crypto API, so your passphrase, plaintext and generated passwords stay on your machine. Nothing is transmitted, logged or stored.',
 
@@ -78,7 +79,8 @@ export const ui = {
     'seo.cat.pdf.title': 'Free Online PDF Tools — Merge, Split, Rotate, Compress · No Upload',
     'seo.cat.pdf.description':
       'Seven free PDF tools that run in your browser: merge, split, rotate, compress, add page numbers, images to PDF and PDF to images. No upload, no watermark, no signup.',
-    'seo.cat.pdf.keywords': 'pdf tools, merge pdf, split pdf, compress pdf, rotate pdf, pdf to images, add page numbers pdf, free pdf tools no upload',
+    'seo.cat.pdf.keywords':
+      'pdf tools, merge pdf, split pdf, compress pdf, rotate pdf, pdf to images, add page numbers pdf, free pdf tools no upload',
     'cat.pdf.intro':
       'Every PDF tool here works with pdf-lib inside your browser tab. Contracts, invoices and scans are processed on your own machine — no upload, no queue, no watermark, and no file size limit beyond your available memory.',
 
@@ -276,7 +278,8 @@ export const ui = {
     'seo.b64img.title': 'Image to Base64 Converter — Free Online Tool · DevTools',
     'seo.b64img.description':
       'Convert any image to a Base64 data URL — or paste a data URL to preview the image. PNG, JPG, SVG, WebP. Runs in your browser, no upload.',
-    'seo.b64img.keywords': 'image to base64, base64 image converter, convert png to base64, jpg to base64, data url generator, image encoder',
+    'seo.b64img.keywords':
+      'image to base64, base64 image converter, convert png to base64, jpg to base64, data url generator, image encoder',
 
     'seo.qrRead.title': 'QR Code Reader Online — Decode QR from Image · DevTools',
     'seo.qrRead.description':
@@ -301,7 +304,8 @@ export const ui = {
     'seo.aes.title': 'AES Encrypt & Decrypt Online — Free, Browser-Only · DevTools',
     'seo.aes.description':
       'Encrypt or decrypt text with AES-256 and a passphrase (CryptoJS, OpenSSL-compatible). 100% client-side — your text and key never leave the browser.',
-    'seo.aes.keywords': 'aes encrypt online, aes decrypt online, encrypt text password, aes-256 online, cryptojs, openssl aes, encrypt decrypt tool',
+    'seo.aes.keywords':
+      'aes encrypt online, aes decrypt online, encrypt text password, aes-256 online, cryptojs, openssl aes, encrypt decrypt tool',
 
     'seo.jwt.title': 'JWT Decoder Online — Inspect Header, Payload, Expiry · DevTools',
     'seo.jwt.description':
@@ -311,7 +315,8 @@ export const ui = {
     'seo.pwd.title': 'Password Generator Online — Strong, Random, Free · DevTools',
     'seo.pwd.description':
       'Generate strong random passwords with custom length (4–128) and character sets (uppercase, lowercase, numbers, symbols). 100% in-browser, no logs.',
-    'seo.pwd.keywords': 'password generator, random password, strong password, secure password generator, free password generator online, create password',
+    'seo.pwd.keywords':
+      'password generator, random password, strong password, secure password generator, free password generator online, create password',
 
     'home.cat.pdf.title': 'PDF',
     'home.cat.pdf.body': 'Merge, split and organize PDF files — all in your browser.',
@@ -364,7 +369,8 @@ export const ui = {
     'home.cards.pdfRotate.body': 'Rotate all pages of a PDF 90, 180 or 270 degrees.',
 
     't.imagesToPdf.title': 'Images → PDF',
-    't.imagesToPdf.lead': 'Combine JPG and PNG images into a single PDF, one image per page. Reorder before exporting. Nothing is uploaded.',
+    't.imagesToPdf.lead':
+      'Combine JPG and PNG images into a single PDF, one image per page. Reorder before exporting. Nothing is uploaded.',
     't.imagesToPdf.drop': 'Add images or click to choose',
     't.imagesToPdf.create': 'Create PDF & download',
     't.imagesToPdf.working': 'Building…',
@@ -425,7 +431,8 @@ export const ui = {
     'home.cards.pdfCompress.body': 'Reduce PDF file size by re-encoding its pages.',
 
     't.imageCompress.title': 'Compress image',
-    't.imageCompress.lead': 'Reduce the file size of an image with a quality slider. Convert to JPG or WebP for the smallest result. Nothing is uploaded.',
+    't.imageCompress.lead':
+      'Reduce the file size of an image with a quality slider. Convert to JPG or WebP for the smallest result. Nothing is uploaded.',
     't.imageCompress.drop': 'Drop an image here or click to choose',
     't.imageCompress.quality': 'Quality',
     't.imageCompress.maxWidth': 'Max width (px, 0 = original)',
@@ -439,7 +446,8 @@ export const ui = {
     't.imageCompress.error': 'Could not process this image.',
 
     't.pdfCompress.title': 'Compress PDF',
-    't.pdfCompress.lead': 'Reduce a PDF file size by re-encoding its pages as compressed images. Best for scanned or image-heavy PDFs. Nothing is uploaded.',
+    't.pdfCompress.lead':
+      'Reduce a PDF file size by re-encoding its pages as compressed images. Best for scanned or image-heavy PDFs. Nothing is uploaded.',
     't.pdfCompress.drop': 'Drop a PDF here or click to choose',
     't.pdfCompress.total': 'total pages',
     't.pdfCompress.quality': 'Quality',
@@ -459,7 +467,8 @@ export const ui = {
     'seo.imageCompress.title': 'Compress Image Online — JPG / PNG / WebP, Free, No Upload · DevTools',
     'seo.imageCompress.description':
       'Reduce image file size in your browser with a quality slider and optional resize. Convert to JPG or WebP. No upload, no watermark, private.',
-    'seo.imageCompress.keywords': 'compress image, reduce image size, image compressor free, compress jpg, compress png, webp converter, no upload',
+    'seo.imageCompress.keywords':
+      'compress image, reduce image size, image compressor free, compress jpg, compress png, webp converter, no upload',
     'seo.pdfCompress.title': 'Compress PDF Online — Reduce PDF Size Free, No Upload · DevTools',
     'seo.pdfCompress.description':
       'Reduce PDF file size in your browser by re-encoding pages as compressed images. Best for scanned PDFs. No upload, no watermark, private.',
@@ -499,7 +508,8 @@ export const ui = {
     'seo.imageConvert.title': 'Convert Image Online — PNG / JPG / WebP, Free, No Upload · DevTools',
     'seo.imageConvert.description':
       'Convert images between PNG, JPG and WebP in your browser. Batch convert and download as a ZIP. No upload, no watermark, private.',
-    'seo.imageConvert.keywords': 'convert image, png to jpg, jpg to png, webp converter, image format converter free, png to webp, no upload',
+    'seo.imageConvert.keywords':
+      'convert image, png to jpg, jpg to png, webp converter, image format converter free, png to webp, no upload',
     'seo.imageResize.title': 'Resize Image Online — By Pixels or Percent, Free, No Upload · DevTools',
     'seo.imageResize.description':
       'Resize images by exact pixels or percentage in your browser, keeping aspect ratio. Export to PNG, JPG or WebP. No upload, no watermark.',
@@ -524,7 +534,40 @@ export const ui = {
     'seo.pdfPageNumbers.title': 'Add Page Numbers to PDF Online — Free, No Upload · DevTools',
     'seo.pdfPageNumbers.description':
       'Add page numbers to a PDF in your browser and choose the position (top or bottom, left, center or right). No upload, no watermark, private.',
-    'seo.pdfPageNumbers.keywords': 'add page numbers to pdf, number pdf pages, pdf pagination, paginate pdf free, page numbers pdf no upload',
+    'seo.pdfPageNumbers.keywords':
+      'add page numbers to pdf, number pdf pages, pdf pagination, paginate pdf free, page numbers pdf no upload',
+
+    'home.cards.pdfImage.title': 'Insert image',
+    'home.cards.pdfImage.body': 'Place an image on a PDF page and drag to move or resize it.',
+
+    't.pdfImage.title': 'Insert image into PDF',
+    't.pdfImage.lead': 'Add an image to a PDF, then drag to position and resize it right on the page. 100% in your browser.',
+    't.pdfImage.dropPdf': 'Drop a PDF here or click to choose',
+    't.pdfImage.total': 'total pages',
+    't.pdfImage.rendering': 'Rendering preview…',
+    't.pdfImage.addImage': 'Add image',
+    't.pdfImage.replaceImage': 'Replace image',
+    't.pdfImage.hint': 'Drag to move · drag the corner to resize',
+    't.pdfImage.page': 'Page',
+    't.pdfImage.prevPage': 'Previous page',
+    't.pdfImage.nextPage': 'Next page',
+    't.pdfImage.size': 'Size',
+    't.pdfImage.opacity': 'Opacity',
+    't.pdfImage.center': 'Center',
+    't.pdfImage.applyTo': 'Apply to',
+    't.pdfImage.thisPage': 'This page',
+    't.pdfImage.allPages': 'All pages',
+    't.pdfImage.apply': 'Insert image & download',
+    't.pdfImage.working': 'Inserting…',
+    't.pdfImage.needImage': 'Add an image first.',
+    't.pdfImage.imageError': 'Could not load this image.',
+    't.pdfImage.error': 'Could not read this PDF (it may be encrypted or corrupt).',
+
+    'seo.pdfImage.title': 'Insert Image into PDF Online — Free, No Upload · DevTools',
+    'seo.pdfImage.description':
+      'Add an image to a PDF and drag to move or resize it right on the page. Set opacity, apply to one page or all. In your browser, no upload, no watermark.',
+    'seo.pdfImage.keywords':
+      'insert image into pdf, add image to pdf, place picture in pdf, add logo to pdf, add signature image pdf, pdf image no upload',
 
     'home.cat.text.title': 'Text',
     'home.cat.text.body': 'Compare and inspect plain text — all in your browser.',
@@ -557,7 +600,8 @@ export const ui = {
     'seo.textDiff.title': 'Compare Two Texts Online — Free Diff Checker, No Upload · DevTools',
     'seo.textDiff.description':
       'Compare two texts in your browser and see the differences highlighted by line and by word. Side-by-side or inline view, ignore case or whitespace. No upload, private.',
-    'seo.textDiff.keywords': 'compare text, diff checker, text diff online, compare two texts, difference between texts, diff tool free, no upload',
+    'seo.textDiff.keywords':
+      'compare text, diff checker, text diff online, compare two texts, difference between texts, diff tool free, no upload',
   },
   es: {
     'nav.home': 'Herramientas',
@@ -594,14 +638,16 @@ export const ui = {
     'seo.cat.encoding.title': 'Herramientas de Codificación Online Gratis — Base64, JWT · Sin Subir Nada',
     'seo.cat.encoding.description':
       'Codifica y decodifica datos en tu navegador: texto Base64, imagen a data URL Base64, decodificador JWT. Todo corre del lado del cliente, no se sube nada.',
-    'seo.cat.encoding.keywords': 'herramientas codificación, codificar base64, decodificar base64, decodificador jwt, imagen a base64, sin subir',
+    'seo.cat.encoding.keywords':
+      'herramientas codificación, codificar base64, decodificar base64, decodificador jwt, imagen a base64, sin subir',
     'cat.encoding.intro':
       'Las herramientas de codificación convierten datos de una representación a otra para que viajen seguros por canales de solo texto. Todas corren dentro de tu navegador — el texto o la imagen que pegas nunca llega a un servidor.',
 
     'seo.cat.security.title': 'Herramientas de Seguridad Online Gratis — Cifrado AES, Contraseñas · Sin Subir',
     'seo.cat.security.description':
       'Cifra y descifra texto con AES y genera contraseñas aleatorias seguras, todo en tu navegador. Las claves nunca salen de tu dispositivo.',
-    'seo.cat.security.keywords': 'herramientas seguridad, cifrar aes online, descifrar aes, generador de contraseñas, contraseña segura, gratis',
+    'seo.cat.security.keywords':
+      'herramientas seguridad, cifrar aes online, descifrar aes, generador de contraseñas, contraseña segura, gratis',
     'cat.security.intro':
       'Estas herramientas usan la Web Crypto API del navegador, así que tu clave, tu texto y las contraseñas generadas se quedan en tu máquina. Nada se transmite, registra ni almacena.',
 
@@ -629,14 +675,16 @@ export const ui = {
     'seo.cat.pdf.title': 'Herramientas PDF Online Gratis — Unir, Dividir, Rotar, Comprimir · Sin Subir',
     'seo.cat.pdf.description':
       'Siete herramientas PDF gratis que corren en tu navegador: unir, dividir, rotar, comprimir, numerar páginas, imágenes a PDF y PDF a imágenes. Sin subir, sin marca de agua, sin registro.',
-    'seo.cat.pdf.keywords': 'herramientas pdf, unir pdf, dividir pdf, comprimir pdf, rotar pdf, pdf a imágenes, numerar páginas pdf, pdf gratis sin subir',
+    'seo.cat.pdf.keywords':
+      'herramientas pdf, unir pdf, dividir pdf, comprimir pdf, rotar pdf, pdf a imágenes, numerar páginas pdf, pdf gratis sin subir',
     'cat.pdf.intro':
       'Cada herramienta PDF trabaja con pdf-lib dentro de tu navegador. Contratos, facturas y escaneos se procesan en tu propia máquina — sin subir, sin cola, sin marca de agua y sin más límite de tamaño que tu memoria disponible.',
 
     'seo.cat.image.title': 'Herramientas de Imagen Online Gratis — Comprimir, Convertir, Redimensionar · Sin Subir',
     'seo.cat.image.description':
       'Comprime, convierte y redimensiona imágenes en tu navegador. JPG, PNG y WebP, por lote y descarga en ZIP. Sin subir nada, sin marca de agua, privado.',
-    'seo.cat.image.keywords': 'herramientas imagen, comprimir imagen, convertir imagen, redimensionar imagen, jpg a webp, png a jpg, sin subir',
+    'seo.cat.image.keywords':
+      'herramientas imagen, comprimir imagen, convertir imagen, redimensionar imagen, jpg a webp, png a jpg, sin subir',
     'cat.image.intro':
       'El procesamiento de imágenes corre sobre el canvas HTML de tu navegador, así que fotos y capturas nunca salen de tu dispositivo. Procesa varios archivos a la vez y descárgalos en un ZIP.',
 
@@ -811,7 +859,8 @@ export const ui = {
     'seo.b64.title': 'Codificar y Decodificar Base64 Online — Gratis · DevTools',
     'seo.b64.description':
       'Codificador y decodificador Base64 gratis online. Convierte texto UTF-8 a Base64 o decodifica Base64 a texto al instante en tu navegador. Sin uploads, sin rastreo.',
-    'seo.b64.keywords': 'base64 online, codificar base64, decodificar base64, base64 a texto, texto a base64, encoder base64, decoder base64',
+    'seo.b64.keywords':
+      'base64 online, codificar base64, decodificar base64, base64 a texto, texto a base64, encoder base64, decoder base64',
 
     'seo.b64img.title': 'Imagen a Base64 — Convertidor Online Gratis · DevTools',
     'seo.b64img.description':
@@ -851,7 +900,8 @@ export const ui = {
     'seo.pwd.title': 'Generador de Contraseñas Online — Seguras y Aleatorias · DevTools',
     'seo.pwd.description':
       'Genera contraseñas aleatorias seguras con longitud personalizada (4–128) y juegos de caracteres (mayúsculas, minúsculas, números, símbolos). 100% en tu navegador.',
-    'seo.pwd.keywords': 'generador de contraseñas, contraseña aleatoria, contraseña segura, generar password, crear contraseña fuerte, password generator español',
+    'seo.pwd.keywords':
+      'generador de contraseñas, contraseña aleatoria, contraseña segura, generar password, crear contraseña fuerte, password generator español',
 
     'home.cat.pdf.title': 'PDF',
     'home.cat.pdf.body': 'Une, divide y organiza archivos PDF — todo en tu navegador.',
@@ -965,7 +1015,8 @@ export const ui = {
     'home.cards.pdfCompress.body': 'Reduce el peso de un PDF recodificando sus páginas.',
 
     't.imageCompress.title': 'Comprimir imagen',
-    't.imageCompress.lead': 'Reduce el peso de una imagen con un control de calidad. Convierte a JPG o WebP para el menor tamaño. No se sube nada.',
+    't.imageCompress.lead':
+      'Reduce el peso de una imagen con un control de calidad. Convierte a JPG o WebP para el menor tamaño. No se sube nada.',
     't.imageCompress.drop': 'Arrastra una imagen o haz clic para elegir',
     't.imageCompress.quality': 'Calidad',
     't.imageCompress.maxWidth': 'Ancho máx (px, 0 = original)',
@@ -979,7 +1030,8 @@ export const ui = {
     't.imageCompress.error': 'No se pudo procesar esta imagen.',
 
     't.pdfCompress.title': 'Comprimir PDF',
-    't.pdfCompress.lead': 'Reduce el peso de un PDF recodificando sus páginas como imágenes comprimidas. Ideal para PDFs escaneados o con muchas imágenes. No se sube nada.',
+    't.pdfCompress.lead':
+      'Reduce el peso de un PDF recodificando sus páginas como imágenes comprimidas. Ideal para PDFs escaneados o con muchas imágenes. No se sube nada.',
     't.pdfCompress.drop': 'Arrastra un PDF o haz clic para elegir',
     't.pdfCompress.total': 'páginas en total',
     't.pdfCompress.quality': 'Calidad',
@@ -999,11 +1051,13 @@ export const ui = {
     'seo.imageCompress.title': 'Comprimir Imagen Online — JPG / PNG / WebP, Gratis, Sin Subir · DevTools',
     'seo.imageCompress.description':
       'Reduce el peso de una imagen en tu navegador con un control de calidad y redimensión opcional. Convierte a JPG o WebP. Sin subir nada, sin marca de agua.',
-    'seo.imageCompress.keywords': 'comprimir imagen, reducir tamaño imagen, compresor de imágenes gratis, comprimir jpg, comprimir png, convertir webp, sin subir',
+    'seo.imageCompress.keywords':
+      'comprimir imagen, reducir tamaño imagen, compresor de imágenes gratis, comprimir jpg, comprimir png, convertir webp, sin subir',
     'seo.pdfCompress.title': 'Comprimir PDF Online — Reduce el Tamaño Gratis, Sin Subir · DevTools',
     'seo.pdfCompress.description':
       'Reduce el peso de un PDF en tu navegador recodificando sus páginas como imágenes comprimidas. Ideal para PDFs escaneados. Sin subir nada, sin marca de agua.',
-    'seo.pdfCompress.keywords': 'comprimir pdf, reducir tamaño pdf, compresor de pdf gratis, achicar pdf, comprimir pdf sin subir, hacer pdf más pequeño',
+    'seo.pdfCompress.keywords':
+      'comprimir pdf, reducir tamaño pdf, compresor de pdf gratis, achicar pdf, comprimir pdf sin subir, hacer pdf más pequeño',
 
     'home.cards.imageConvert.title': 'Convertir imagen',
     'home.cards.imageConvert.body': 'Convierte imágenes entre PNG, JPG y WebP. Por lote + ZIP.',
@@ -1039,11 +1093,13 @@ export const ui = {
     'seo.imageConvert.title': 'Convertir Imagen Online — PNG / JPG / WebP, Gratis, Sin Subir · DevTools',
     'seo.imageConvert.description':
       'Convierte imágenes entre PNG, JPG y WebP en tu navegador. Convierte por lote y descarga en ZIP. Sin subir nada, sin marca de agua, privado.',
-    'seo.imageConvert.keywords': 'convertir imagen, png a jpg, jpg a png, convertir webp, conversor de formato de imagen gratis, png a webp, sin subir',
+    'seo.imageConvert.keywords':
+      'convertir imagen, png a jpg, jpg a png, convertir webp, conversor de formato de imagen gratis, png a webp, sin subir',
     'seo.imageResize.title': 'Redimensionar Imagen Online — Por Píxeles o Porcentaje, Gratis, Sin Subir · DevTools',
     'seo.imageResize.description':
       'Redimensiona imágenes por píxeles exactos o porcentaje en tu navegador, manteniendo la proporción. Exporta a PNG, JPG o WebP. Sin subir nada.',
-    'seo.imageResize.keywords': 'redimensionar imagen, redimensionar imágenes gratis, escalar imagen, cambiar tamaño imagen, resize jpg png, sin subir',
+    'seo.imageResize.keywords':
+      'redimensionar imagen, redimensionar imágenes gratis, escalar imagen, cambiar tamaño imagen, resize jpg png, sin subir',
 
     'home.cards.pdfPageNumbers.title': 'Numerar páginas',
     'home.cards.pdfPageNumbers.body': 'Agrega números de página a un PDF — elige la posición.',
@@ -1064,7 +1120,40 @@ export const ui = {
     'seo.pdfPageNumbers.title': 'Numerar Páginas de PDF Online — Gratis, Sin Subir · DevTools',
     'seo.pdfPageNumbers.description':
       'Agrega números de página a un PDF en tu navegador y elige la posición (arriba o abajo, izquierda, centro o derecha). Sin subir nada, sin marca de agua.',
-    'seo.pdfPageNumbers.keywords': 'numerar páginas pdf, agregar números de página pdf, paginar pdf, paginación pdf gratis, números de página pdf sin subir',
+    'seo.pdfPageNumbers.keywords':
+      'numerar páginas pdf, agregar números de página pdf, paginar pdf, paginación pdf gratis, números de página pdf sin subir',
+
+    'home.cards.pdfImage.title': 'Insertar imagen',
+    'home.cards.pdfImage.body': 'Coloca una imagen sobre una página del PDF y arrástrala para moverla o redimensionarla.',
+
+    't.pdfImage.title': 'Insertar imagen en PDF',
+    't.pdfImage.lead': 'Agrega una imagen a un PDF y arrástrala para ubicarla y redimensionarla sobre la página. 100% en tu navegador.',
+    't.pdfImage.dropPdf': 'Arrastra un PDF o haz clic para elegir',
+    't.pdfImage.total': 'páginas en total',
+    't.pdfImage.rendering': 'Generando vista previa…',
+    't.pdfImage.addImage': 'Agregar imagen',
+    't.pdfImage.replaceImage': 'Reemplazar imagen',
+    't.pdfImage.hint': 'Arrastra para mover · arrastra la esquina para redimensionar',
+    't.pdfImage.page': 'Página',
+    't.pdfImage.prevPage': 'Página anterior',
+    't.pdfImage.nextPage': 'Página siguiente',
+    't.pdfImage.size': 'Tamaño',
+    't.pdfImage.opacity': 'Opacidad',
+    't.pdfImage.center': 'Centrar',
+    't.pdfImage.applyTo': 'Aplicar a',
+    't.pdfImage.thisPage': 'Esta página',
+    't.pdfImage.allPages': 'Todas las páginas',
+    't.pdfImage.apply': 'Insertar imagen y descargar',
+    't.pdfImage.working': 'Insertando…',
+    't.pdfImage.needImage': 'Agrega una imagen primero.',
+    't.pdfImage.imageError': 'No se pudo cargar esta imagen.',
+    't.pdfImage.error': 'No se pudo leer este PDF (puede estar cifrado o dañado).',
+
+    'seo.pdfImage.title': 'Insertar Imagen en PDF Online — Gratis, Sin Subir · DevTools',
+    'seo.pdfImage.description':
+      'Agrega una imagen a un PDF y arrástrala para moverla o redimensionarla sobre la página. Ajusta la opacidad y aplícala a una página o a todas. En tu navegador, sin subir nada.',
+    'seo.pdfImage.keywords':
+      'insertar imagen en pdf, agregar imagen a pdf, poner foto en pdf, agregar logo a pdf, agregar firma imagen pdf, imagen pdf sin subir',
 
     'home.cat.text.title': 'Texto',
     'home.cat.text.body': 'Compara e inspecciona texto plano — todo en tu navegador.',
@@ -1097,7 +1186,8 @@ export const ui = {
     'seo.textDiff.title': 'Comparar Dos Textos Online — Diff Gratis, Sin Subir Nada · DevTools',
     'seo.textDiff.description':
       'Compara dos textos en tu navegador y ve las diferencias resaltadas por línea y por palabra. Vista lado a lado o en línea, ignorar mayúsculas o espacios. Sin subir nada, privado.',
-    'seo.textDiff.keywords': 'comparar texto, comparar dos textos, diferencias entre textos, diff online, comparador de texto gratis, text diff, sin subir',
+    'seo.textDiff.keywords':
+      'comparar texto, comparar dos textos, diferencias entre textos, diff online, comparador de texto gratis, text diff, sin subir',
   },
 } as const;
 

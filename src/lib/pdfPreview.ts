@@ -46,6 +46,36 @@ export async function renderFirstPage(data: ArrayBuffer, width = 160): Promise<s
   return thumbs[0] ?? null;
 }
 
+export interface PageRender {
+  url: string; // data URL JPEG de la página
+  widthPt: number; // ancho de la página en puntos PDF (viewport a escala 1)
+  heightPt: number; // alto de la página en puntos PDF
+}
+
+// Renderiza UNA página a un ancho fijo y devuelve, además de la miniatura, el
+// tamaño real de la página en puntos. El editor lo usa para saber la relación de
+// aspecto exacta y colocar la imagen en las mismas coordenadas que verá pdf-lib.
+// (Asume páginas sin /Rotate; con rotación la vista previa y pdf-lib difieren.)
+export async function renderPage(data: ArrayBuffer, page: number, width = 480): Promise<PageRender | null> {
+  const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(data.slice(0)) });
+  const pdf = await loadingTask.promise;
+  try {
+    if (page < 1 || page > pdf.numPages) return null;
+    const p = await pdf.getPage(page);
+    const base = p.getViewport({ scale: 1 });
+    const viewport = p.getViewport({ scale: width / base.width });
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.ceil(viewport.width);
+    canvas.height = Math.ceil(viewport.height);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
+    await p.render({ canvas, canvasContext: ctx, viewport }).promise;
+    return { url: canvas.toDataURL('image/jpeg', 0.82), widthPt: base.width, heightPt: base.height };
+  } finally {
+    await loadingTask.destroy();
+  }
+}
+
 export interface PdfPageImage {
   page: number;
   url: string; // objectURL para mostrar/descargar

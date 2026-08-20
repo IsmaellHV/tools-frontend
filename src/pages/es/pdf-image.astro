@@ -1,0 +1,50 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ToolShell from '~/components/ToolShell.astro';
+import PdfImageTool from '~/components/tools/PdfImageTool';
+import { getLangFromUrl, useTranslations, withBase } from '~/i18n/utils';
+import { buildDict } from '~/lib/dict';
+import { buildToolJsonLd } from '~/lib/seo';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const h1 = t('t.pdfImage.title');
+const lead = t('t.pdfImage.lead');
+const metaTitle = t('seo.pdfImage.title');
+const metaDesc = t('seo.pdfImage.description');
+const keywords = t('seo.pdfImage.keywords');
+
+const SITE = (import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'https://ismaelhv.com').replace(/\/$/, '');
+const url = `${SITE}${Astro.url.pathname.replace(/\/$/, '')}`;
+const homePath = lang === 'en' ? withBase('/') : withBase('/es/');
+const jsonLd = buildToolJsonLd({ name: h1, description: lead, url, lang, category: 'UtilitiesApplication' }, SITE, homePath);
+
+const dict = buildDict(lang, [
+  't.pdfImage.dropPdf',
+  't.pdfImage.total',
+  't.pdfImage.rendering',
+  't.pdfImage.addImage',
+  't.pdfImage.replaceImage',
+  't.pdfImage.hint',
+  't.pdfImage.page',
+  't.pdfImage.prevPage',
+  't.pdfImage.nextPage',
+  't.pdfImage.size',
+  't.pdfImage.opacity',
+  't.pdfImage.center',
+  't.pdfImage.applyTo',
+  't.pdfImage.thisPage',
+  't.pdfImage.allPages',
+  't.pdfImage.apply',
+  't.pdfImage.working',
+  't.pdfImage.needImage',
+  't.pdfImage.imageError',
+  't.pdfImage.error',
+] as const);
+---
+
+<BaseLayout title={metaTitle} description={metaDesc} {keywords} {jsonLd}>
+  <ToolShell title={h1} {lead}>
+    <PdfImageTool client:only="react" dict={dict} />
+  </ToolShell>
+</BaseLayout>
