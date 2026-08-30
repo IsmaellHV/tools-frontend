@@ -7,7 +7,12 @@
 // `thumb` (el render ya censurado) y la herramienta ofrece borrado explicito.
 
 export type EditOp =
-  | { k: 'box'; x: number; y: number; w: number; h: number; color: string }
+  // `fill` ausente = relleno (comportamiento de las sesiones guardadas antes de
+  // que existiera el modo contorno, asi que se siguen abriendo igual).
+  | { k: 'box'; x: number; y: number; w: number; h: number; color: string; fill?: boolean; width?: number }
+  | { k: 'ellipse'; x: number; y: number; w: number; h: number; color: string; fill?: boolean; width?: number }
+  | { k: 'polygon'; points: [number, number][]; color: string; fill?: boolean; width?: number }
+  | { k: 'arrow'; x1: number; y1: number; x2: number; y2: number; color: string; width: number }
   | { k: 'pixelate'; x: number; y: number; w: number; h: number; size: number }
   | { k: 'blur'; x: number; y: number; w: number; h: number; radius: number }
   | { k: 'text'; x: number; y: number; text: string; color: string; size: number };

@@ -55,12 +55,76 @@ const blur = (ctx: CanvasRenderingContext2D, op: Extract<EditOp, { k: 'blur' }>)
   ctx.restore();
 };
 
+/** Rellena o contornea el trazo ya definido en el path actual. */
+const paint = (ctx: CanvasRenderingContext2D, color: string, fill: boolean, width: number): void => {
+  if (fill) {
+    ctx.fillStyle = color;
+    ctx.fill();
+  } else {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = Math.max(1, width);
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+  }
+};
+
 const box = (ctx: CanvasRenderingContext2D, op: Extract<EditOp, { k: 'box' }>): void => {
   const r = norm(op.x, op.y, op.w, op.h, ctx.canvas.width, ctx.canvas.height);
   if (r.w < 1 || r.h < 1) return;
   ctx.save();
+  ctx.beginPath();
+  ctx.rect(r.x, r.y, r.w, r.h);
+  paint(ctx, op.color, op.fill !== false, op.width ?? 4);
+  ctx.restore();
+};
+
+const ellipse = (ctx: CanvasRenderingContext2D, op: Extract<EditOp, { k: 'ellipse' }>): void => {
+  const r = norm(op.x, op.y, op.w, op.h, ctx.canvas.width, ctx.canvas.height);
+  if (r.w < 2 || r.h < 2) return;
+  ctx.save();
+  ctx.beginPath();
+  ctx.ellipse(r.x + r.w / 2, r.y + r.h / 2, r.w / 2, r.h / 2, 0, 0, Math.PI * 2);
+  paint(ctx, op.color, op.fill !== false, op.width ?? 4);
+  ctx.restore();
+};
+
+const polygon = (ctx: CanvasRenderingContext2D, op: Extract<EditOp, { k: 'polygon' }>): void => {
+  if (op.points.length < 3) return;
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(op.points[0][0], op.points[0][1]);
+  for (const [x, y] of op.points.slice(1)) ctx.lineTo(x, y);
+  ctx.closePath();
+  paint(ctx, op.color, op.fill !== false, op.width ?? 4);
+  ctx.restore();
+};
+
+const arrow = (ctx: CanvasRenderingContext2D, op: Extract<EditOp, { k: 'arrow' }>): void => {
+  const dx = op.x2 - op.x1;
+  const dy = op.y2 - op.y1;
+  const len = Math.hypot(dx, dy);
+  if (len < 4) return;
+  const w = Math.max(1, op.width);
+  const head = Math.min(len, w * 4); // la punta no puede comerse la flecha entera
+  const a = Math.atan2(dy, dx);
+  // El tallo se corta antes de la punta para que no asome por dentro del triangulo.
+  const sx = op.x2 - Math.cos(a) * head * 0.9;
+  const sy = op.y2 - Math.sin(a) * head * 0.9;
+  ctx.save();
+  ctx.strokeStyle = op.color;
   ctx.fillStyle = op.color;
-  ctx.fillRect(r.x, r.y, r.w, r.h);
+  ctx.lineWidth = w;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(op.x1, op.y1);
+  ctx.lineTo(sx, sy);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(op.x2, op.y2);
+  ctx.lineTo(op.x2 - Math.cos(a - 0.42) * head, op.y2 - Math.sin(a - 0.42) * head);
+  ctx.lineTo(op.x2 - Math.cos(a + 0.42) * head, op.y2 - Math.sin(a + 0.42) * head);
+  ctx.closePath();
+  ctx.fill();
   ctx.restore();
 };
 
@@ -82,13 +146,16 @@ const text = (ctx: CanvasRenderingContext2D, op: Extract<EditOp, { k: 'text' }>)
 export function applyOps(ctx: CanvasRenderingContext2D, ops: readonly EditOp[]): void {
   for (const op of ops) {
     if (op.k === 'box') box(ctx, op);
+    else if (op.k === 'ellipse') ellipse(ctx, op);
+    else if (op.k === 'polygon') polygon(ctx, op);
+    else if (op.k === 'arrow') arrow(ctx, op);
     else if (op.k === 'pixelate') pixelate(ctx, op);
     else if (op.k === 'blur') blur(ctx, op);
     else text(ctx, op);
   }
 }
 
-/** Render a resolucion nativa: es el que se descarga y el que se guarda. */
+/** Render a resolucion nativa: es el que se descarga, se copia y se guarda. */
 export function renderFull(img: CanvasImageSource, w: number, h: number, ops: readonly EditOp[]): HTMLCanvasElement {
   const canvas = document.createElement('canvas');
   canvas.width = w;

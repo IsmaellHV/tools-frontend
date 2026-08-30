@@ -9,9 +9,12 @@ interface Props {
   dict: Dict;
 }
 
-type Tool = 'box' | 'pixelate' | 'blur' | 'text';
+type Tool = 'box' | 'ellipse' | 'polygon' | 'arrow' | 'pixelate' | 'blur' | 'text';
 type Format = 'png' | 'jpeg';
+type Point = [number, number];
 
+const TOOLS: readonly Tool[] = ['box', 'ellipse', 'polygon', 'arrow', 'pixelate', 'blur', 'text'];
+const SHAPES: readonly Tool[] = ['box', 'ellipse', 'polygon'];
 const COLORS = ['#000000', '#ffffff', '#ff2d2d', '#ffd400', '#0a7cff'];
 
 const newId = (): string =>
@@ -32,26 +35,43 @@ export default function ImageRedactTool({ dict }: Props) {
   const imgRef = useRef<HTMLImageElement | null>(null);
   const blobRef = useRef<Blob | null>(null);
   const dragRef = useRef<{ x: number; y: number; w: number; h: number } | null>(null);
+  const textInputRef = useRef<HTMLInputElement>(null);
 
   const [name, setName] = useState('');
   const [size, setSize] = useState({ w: 0, h: 0 });
-  const [ops, setOps] = useState<EditOp[]>([]);
-  const [redo, setRedo] = useState<EditOp[]>([]);
+  // ops y redo viven juntos: hacerlo en dos setState encadenados duplicaba
+  // entradas en StrictMode al re-ejecutar el updater.
+  const [hist, setHist] = useState<{ ops: EditOp[]; redo: EditOp[] }>({ ops: [], redo: [] });
   const [tool, setTool] = useState<Tool>('box');
   const [color, setColor] = useState(COLORS[0]);
+  const [fill, setFill] = useState(true);
+  const [stroke, setStroke] = useState(6);
   const [strength, setStrength] = useState(14);
   const [fontSize, setFontSize] = useState(32);
-  const [label, setLabel] = useState('');
+  const [poly, setPoly] = useState<Point[]>([]);
+  const [editing, setEditing] = useState<{ ix: number; iy: number; left: number; top: number } | null>(null);
+  const [draft, setDraft] = useState('');
   const [format, setFormat] = useState<Format>('png');
+  const [copied, setCopied] = useState<'idle' | 'ok' | 'fail'>('idle');
   const [sessionId, setSessionId] = useState('');
   const [sessions, setSessions] = useState<SessionSummary[]>([]);
   const [thumbs, setThumbs] = useState<Record<string, string>>({});
   const [error, setError] = useState('');
   const [ready, setReady] = useState(false);
 
+  const ops = hist.ops;
   const t = (k: string, fb: string) => pick(dict, k as Parameters<typeof pick>[1], fb);
 
-  /* ---------- historial ---------- */
+  /* ---------- historial de edicion ---------- */
+
+  const pushOp = useCallback((op: EditOp) => setHist((h) => ({ ops: [...h.ops, op], redo: [] })), []);
+  const undo = useCallback(
+    () => setHist((h) => (h.ops.length ? { ops: h.ops.slice(0, -1), redo: [h.ops[h.ops.length - 1], ...h.redo] } : h)),
+    [],
+  );
+  const redo = useCallback(() => setHist((h) => (h.redo.length ? { ops: [...h.ops, h.redo[0]], redo: h.redo.slice(1) } : h)), []);
+
+  /* ---------- sesiones guardadas ---------- */
 
   const refreshHistory = useCallback(async () => {
     const list = await listSessions();
@@ -71,37 +91,73 @@ export default function ImageRedactTool({ dict }: Props) {
 
   /* ---------- pintado ---------- */
 
-  // Re-hornea base + ops una sola vez por cambio; el arrastre solo copia el cache.
+  // Re-hornea base + ops una sola vez por cambio; arrastrar solo copia el cache.
   const bake = useCallback(() => {
     const img = imgRef.current;
     const canvas = canvasRef.current;
     if (!img || !canvas) return;
     bakedRef.current = renderFull(img, size.w, size.h, ops);
-    const ctx = canvas.getContext('2d');
-    if (ctx && bakedRef.current) ctx.drawImage(bakedRef.current, 0, 0);
+    canvas.getContext('2d')?.drawImage(bakedRef.current, 0, 0);
   }, [ops, size.w, size.h]);
 
   useEffect(() => {
     if (ready) bake();
   }, [ready, bake]);
 
-  const paintMarquee = (r: { x: number; y: number; w: number; h: number }) => {
-    const canvas = canvasRef.current;
-    const baked = bakedRef.current;
-    const ctx = canvas?.getContext('2d');
-    if (!canvas || !baked || !ctx) return;
-    ctx.drawImage(baked, 0, 0);
-    // Previsualiza el efecto real en vez de un simple rectangulo punteado.
-    if (tool === 'box') applyOps(ctx, [{ k: 'box', ...r, color }]);
-    else if (tool === 'pixelate') applyOps(ctx, [{ k: 'pixelate', ...r, size: strength }]);
-    else if (tool === 'blur') applyOps(ctx, [{ k: 'blur', ...r, radius: strength }]);
-    ctx.save();
-    ctx.strokeStyle = '#0a7cff';
-    ctx.lineWidth = Math.max(1, size.w / 500);
-    ctx.setLineDash([8, 6]);
-    ctx.strokeRect(r.x, r.y, r.w, r.h);
-    ctx.restore();
-  };
+  /** Dibuja sobre el cache el trazo que aun no se ha confirmado. */
+  const preview = useCallback(
+    (build: (ctx: CanvasRenderingContext2D) => void) => {
+      const canvas = canvasRef.current;
+      const baked = bakedRef.current;
+      const ctx = canvas?.getContext('2d');
+      if (!canvas || !baked || !ctx) return;
+      ctx.drawImage(baked, 0, 0);
+      build(ctx);
+    },
+    [],
+  );
+
+  const previewDrag = (r: { x: number; y: number; w: number; h: number }) =>
+    preview((ctx) => {
+      // Se previsualiza el efecto real, no un rectangulo punteado generico.
+      if (tool === 'box') applyOps(ctx, [{ k: 'box', ...r, color, fill, width: stroke }]);
+      else if (tool === 'ellipse') applyOps(ctx, [{ k: 'ellipse', ...r, color, fill, width: stroke }]);
+      else if (tool === 'arrow') applyOps(ctx, [{ k: 'arrow', x1: r.x, y1: r.y, x2: r.x + r.w, y2: r.y + r.h, color, width: stroke }]);
+      else if (tool === 'pixelate') applyOps(ctx, [{ k: 'pixelate', ...r, size: strength }]);
+      else if (tool === 'blur') applyOps(ctx, [{ k: 'blur', ...r, radius: strength }]);
+      if (tool !== 'arrow') {
+        ctx.save();
+        ctx.strokeStyle = '#0a7cff';
+        ctx.lineWidth = Math.max(1, size.w / 500);
+        ctx.setLineDash([8, 6]);
+        ctx.strokeRect(r.x, r.y, r.w, r.h);
+        ctx.restore();
+      }
+    });
+
+  // Polilinea en curso + puntos, para saber donde vas a cerrar.
+  useEffect(() => {
+    if (!ready || tool !== 'polygon') return;
+    preview((ctx) => {
+      if (!poly.length) return;
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = Math.max(1, stroke);
+      ctx.setLineDash([6, 5]);
+      ctx.beginPath();
+      ctx.moveTo(poly[0][0], poly[0][1]);
+      for (const [x, y] of poly.slice(1)) ctx.lineTo(x, y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#0a7cff';
+      for (const [x, y] of poly) {
+        ctx.beginPath();
+        ctx.arc(x, y, Math.max(3, size.w / 220), 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    });
+  }, [poly, tool, ready, color, stroke, size.w, preview]);
 
   /* ---------- carga ---------- */
 
@@ -116,8 +172,9 @@ export default function ImageRedactTool({ dict }: Props) {
         blobRef.current = f;
         setSize({ w: img.naturalWidth, h: img.naturalHeight });
         setName(fileName || (f as File).name || 'image');
-        setOps([]);
-        setRedo([]);
+        setHist({ ops: [], redo: [] });
+        setPoly([]);
+        setEditing(null);
         setSessionId(newId());
         setReady(true);
       } catch {
@@ -132,39 +189,94 @@ export default function ImageRedactTool({ dict }: Props) {
   // Pegar desde el portapapeles (captura de pantalla -> Ctrl/Cmd+V).
   useEffect(() => {
     const onPaste = (e: ClipboardEvent) => {
+      if (editing) return; // si estas escribiendo, pegar es del input
       const item = Array.from(e.clipboardData?.items || []).find((i) => i.type.startsWith('image/'));
       const f = item?.getAsFile();
       if (f) void loadFile(f, 'pasted');
     };
     window.addEventListener('paste', onPaste);
     return () => window.removeEventListener('paste', onPaste);
-  }, [loadFile]);
+  }, [loadFile, editing]);
 
-  /* ---------- interaccion ---------- */
+  /* ---------- atajos de teclado ---------- */
+
+  const closePolygon = useCallback(() => {
+    setPoly((p) => {
+      if (p.length >= 3) pushOp({ k: 'polygon', points: p, color, fill, width: stroke });
+      return [];
+    });
+  }, [pushOp, color, fill, stroke]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const el = e.target as HTMLElement | null;
+      const typing = !!el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable);
+      if (e.key === 'Escape') {
+        setPoly([]);
+        setEditing(null);
+        return;
+      }
+      if (typing) return; // dentro de un input, Ctrl+Z es del navegador
+      const mod = e.ctrlKey || e.metaKey;
+      if (!mod) {
+        if (e.key === 'Enter' && poly.length >= 3) {
+          e.preventDefault();
+          closePolygon();
+        }
+        return;
+      }
+      const k = e.key.toLowerCase();
+      if (k === 'z' && !e.shiftKey) {
+        e.preventDefault();
+        undo();
+      } else if ((k === 'z' && e.shiftKey) || k === 'y') {
+        e.preventDefault();
+        redo();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [undo, redo, poly.length, closePolygon]);
+
+  /* ---------- interaccion con el lienzo ---------- */
 
   const toImageCoords = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
-    if (!canvas) return { x: 0, y: 0 };
+    if (!canvas) return { x: 0, y: 0, sx: 1 };
     const rect = canvas.getBoundingClientRect();
     return {
       x: ((e.clientX - rect.left) / rect.width) * canvas.width,
       y: ((e.clientY - rect.top) / rect.height) * canvas.height,
+      sx: rect.width / canvas.width,
     };
-  };
-
-  const pushOp = (op: EditOp) => {
-    setOps((prev) => [...prev, op]);
-    setRedo([]);
   };
 
   const onPointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if (!ready) return;
     const p = toImageCoords(e);
+
     if (tool === 'text') {
-      if (!label.trim()) return;
-      pushOp({ k: 'text', x: p.x, y: p.y, text: label.trim(), color, size: fontSize });
+      // El input flota justo donde has hecho clic: escribes sobre la imagen.
+      setDraft('');
+      setEditing({ ix: p.x, iy: p.y, left: p.x * p.sx, top: p.y * p.sx });
       return;
     }
+
+    if (tool === 'polygon') {
+      setPoly((prev) => {
+        // Clic cerca del primer punto = cerrar el poligono.
+        if (prev.length >= 3) {
+          const [fx, fy] = prev[0];
+          if (Math.hypot(p.x - fx, p.y - fy) < Math.max(10, size.w / 60)) {
+            pushOp({ k: 'polygon', points: prev, color, fill, width: stroke });
+            return [];
+          }
+        }
+        return [...prev, [p.x, p.y] as Point];
+      });
+      return;
+    }
+
     e.currentTarget.setPointerCapture(e.pointerId);
     dragRef.current = { x: p.x, y: p.y, w: 0, h: 0 };
   };
@@ -173,37 +285,34 @@ export default function ImageRedactTool({ dict }: Props) {
     if (!dragRef.current) return;
     const p = toImageCoords(e);
     dragRef.current = { ...dragRef.current, w: p.x - dragRef.current.x, h: p.y - dragRef.current.y };
-    paintMarquee(dragRef.current);
+    previewDrag(dragRef.current);
   };
 
   const onPointerUp = () => {
     const r = dragRef.current;
     dragRef.current = null;
-    if (!r || Math.abs(r.w) < 3 || Math.abs(r.h) < 3) return bake();
-    if (tool === 'box') pushOp({ k: 'box', ...r, color });
+    if (!r) return;
+    const tiny = Math.abs(r.w) < 3 && Math.abs(r.h) < 3;
+    if (tiny) return bake();
+    if (tool === 'box') pushOp({ k: 'box', ...r, color, fill, width: stroke });
+    else if (tool === 'ellipse') pushOp({ k: 'ellipse', ...r, color, fill, width: stroke });
+    else if (tool === 'arrow') pushOp({ k: 'arrow', x1: r.x, y1: r.y, x2: r.x + r.w, y2: r.y + r.h, color, width: stroke });
     else if (tool === 'pixelate') pushOp({ k: 'pixelate', ...r, size: strength });
     else if (tool === 'blur') pushOp({ k: 'blur', ...r, radius: strength });
   };
 
-  const undo = () => {
-    setOps((prev) => {
-      if (!prev.length) return prev;
-      setRedo((r) => [prev[prev.length - 1], ...r]);
-      return prev.slice(0, -1);
-    });
+  const commitText = () => {
+    if (editing && draft.trim()) pushOp({ k: 'text', x: editing.ix, y: editing.iy, text: draft.trim(), color, size: fontSize });
+    setEditing(null);
+    setDraft('');
   };
 
-  const redoOp = () => {
-    setRedo((prev) => {
-      if (!prev.length) return prev;
-      setOps((o) => [...o, prev[0]]);
-      return prev.slice(1);
-    });
-  };
+  useEffect(() => {
+    if (editing) textInputRef.current?.focus();
+  }, [editing]);
 
   /* ---------- guardado local ---------- */
 
-  // Autoguardado: solo cuando hay ediciones, para no llenar el historial de originales.
   useEffect(() => {
     if (!ready || !ops.length || !sessionId) return;
     const id = setTimeout(async () => {
@@ -227,8 +336,9 @@ export default function ImageRedactTool({ dict }: Props) {
       blobRef.current = s.original;
       setSize({ w: s.width, h: s.height });
       setName(s.name);
-      setOps(s.ops);
-      setRedo([]);
+      setHist({ ops: s.ops, redo: [] });
+      setPoly([]);
+      setEditing(null);
       setSessionId(s.id);
       setReady(true);
     } finally {
@@ -248,11 +358,11 @@ export default function ImageRedactTool({ dict }: Props) {
 
   /* ---------- salida ---------- */
 
+  const exportCanvas = () => renderFull(imgRef.current as HTMLImageElement, size.w, size.h, ops);
+
   const download = async () => {
-    const img = imgRef.current;
-    if (!img) return;
-    const full = renderFull(img, size.w, size.h, ops);
-    const blob = await canvasToBlob(full, `image/${format}`);
+    if (!imgRef.current) return;
+    const blob = await canvasToBlob(exportCanvas(), `image/${format}`);
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = `${name.replace(/\.[^.]+$/, '') || 'image'}-redacted.${format === 'jpeg' ? 'jpg' : 'png'}`;
@@ -260,7 +370,31 @@ export default function ImageRedactTool({ dict }: Props) {
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   };
 
-  const needsSize = tool === 'pixelate' || tool === 'blur';
+  const copy = async () => {
+    if (!imgRef.current) return;
+    try {
+      // El portapapeles solo acepta PNG de forma fiable, aunque exportes JPG.
+      const blob = await canvasToBlob(exportCanvas(), 'image/png');
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+      setCopied('ok');
+    } catch {
+      setCopied('fail');
+    }
+    setTimeout(() => setCopied('idle'), 2000);
+  };
+
+  const needsStrength = tool === 'pixelate' || tool === 'blur';
+  const isShape = SHAPES.includes(tool);
+  const showStroke = tool === 'arrow' || (isShape && !fill);
+
+  const hint =
+    tool === 'text'
+      ? t('t.imageRedact.hintText', 'Click on the image and type right there. Enter to place it.')
+      : tool === 'polygon'
+        ? t('t.imageRedact.hintPolygon', 'Click to add corners. Close it by clicking the first point or pressing Enter.')
+        : tool === 'arrow'
+          ? t('t.imageRedact.hintArrow', 'Drag from the tail to the tip of the arrow.')
+          : t('t.imageRedact.hintDrag', 'Drag over the area you want to cover.');
 
   return (
     <div className="space-y-4">
@@ -307,13 +441,17 @@ export default function ImageRedactTool({ dict }: Props) {
       {ready && (
         <>
           <div className="flex flex-wrap items-center gap-2">
-            {(['box', 'pixelate', 'blur', 'text'] as Tool[]).map((k) => (
+            {TOOLS.map((k) => (
               <button
                 key={k}
                 type="button"
                 className={`btn ${tool === k ? 'btn-primary' : ''}`}
                 aria-pressed={tool === k}
-                onClick={() => setTool(k)}
+                onClick={() => {
+                  setPoly([]);
+                  setEditing(null);
+                  setTool(k);
+                }}
                 style={{ padding: '0.4rem 0.7rem' }}
               >
                 {t(`t.imageRedact.tool.${k}`, k)}
@@ -322,9 +460,7 @@ export default function ImageRedactTool({ dict }: Props) {
           </div>
 
           <p className="font-mono text-xs" style={{ color: 'var(--color-fg-muted)' }}>
-            {tool === 'text'
-              ? t('t.imageRedact.hintText', 'Type your note, then click on the image to place it.')
-              : t('t.imageRedact.hintDrag', 'Drag over the area you want to cover.')}
+            {hint}
           </p>
 
           <div className="grid gap-4 sm:grid-cols-3">
@@ -350,7 +486,30 @@ export default function ImageRedactTool({ dict }: Props) {
               </div>
             </div>
 
-            {needsSize && (
+            {isShape && (
+              <div>
+                <span className="label">{t('t.imageRedact.style', 'Style')}</span>
+                <div className="flex items-center gap-2">
+                  <button type="button" className={`btn ${fill ? 'btn-primary' : ''}`} aria-pressed={fill} onClick={() => setFill(true)} style={{ padding: '0.35rem 0.6rem' }}>
+                    {t('t.imageRedact.filled', 'Filled')}
+                  </button>
+                  <button type="button" className={`btn ${!fill ? 'btn-primary' : ''}`} aria-pressed={!fill} onClick={() => setFill(false)} style={{ padding: '0.35rem 0.6rem' }}>
+                    {t('t.imageRedact.outline', 'Outline')}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {showStroke && (
+              <div>
+                <label className="label" htmlFor="stroke">
+                  {t('t.imageRedact.stroke', 'Line width')}
+                </label>
+                <input id="stroke" type="range" min={1} max={40} value={stroke} onChange={(e) => setStroke(Number(e.target.value))} />
+              </div>
+            )}
+
+            {needsStrength && (
               <div>
                 <label className="label" htmlFor="strength">
                   {tool === 'pixelate' ? t('t.imageRedact.blockSize', 'Block size') : t('t.imageRedact.radius', 'Blur radius')}
@@ -360,53 +519,77 @@ export default function ImageRedactTool({ dict }: Props) {
             )}
 
             {tool === 'text' && (
-              <>
-                <div>
-                  <label className="label" htmlFor="note">
-                    {t('t.imageRedact.text', 'Text')}
-                  </label>
-                  <input id="note" type="text" value={label} onChange={(e) => setLabel(e.target.value)} placeholder={t('t.imageRedact.textPlaceholder', 'e.g. CONFIDENTIAL')} />
-                </div>
-                <div>
-                  <label className="label" htmlFor="fs">
-                    {t('t.imageRedact.fontSize', 'Font size')}
-                  </label>
-                  <input id="fs" type="range" min={12} max={160} value={fontSize} onChange={(e) => setFontSize(Number(e.target.value))} />
-                </div>
-              </>
+              <div>
+                <label className="label" htmlFor="fs">
+                  {t('t.imageRedact.fontSize', 'Font size')}
+                </label>
+                <input id="fs" type="range" min={12} max={160} value={fontSize} onChange={(e) => setFontSize(Number(e.target.value))} />
+              </div>
             )}
           </div>
 
           <div className="card" style={{ padding: '0.75rem', overflow: 'auto' }}>
-            <canvas
-              ref={canvasRef}
-              width={size.w}
-              height={size.h}
-              onPointerDown={onPointerDown}
-              onPointerMove={onPointerMove}
-              onPointerUp={onPointerUp}
-              onPointerCancel={onPointerUp}
-              style={{
-                display: 'block',
-                maxWidth: '100%',
-                height: 'auto',
-                margin: '0 auto',
-                touchAction: 'none',
-                cursor: tool === 'text' ? 'text' : 'crosshair',
-                border: '2px solid var(--color-border-strong)',
-                background: '#fff',
-              }}
-            />
+            <div style={{ position: 'relative', width: 'fit-content', margin: '0 auto' }}>
+              <canvas
+                ref={canvasRef}
+                width={size.w}
+                height={size.h}
+                onPointerDown={onPointerDown}
+                onPointerMove={onPointerMove}
+                onPointerUp={onPointerUp}
+                onPointerCancel={onPointerUp}
+                onDoubleClick={() => poly.length >= 3 && closePolygon()}
+                style={{
+                  display: 'block',
+                  maxWidth: '100%',
+                  height: 'auto',
+                  touchAction: 'none',
+                  cursor: tool === 'text' ? 'text' : 'crosshair',
+                  border: '2px solid var(--color-border-strong)',
+                  background: '#fff',
+                }}
+              />
+              {editing && (
+                <input
+                  ref={textInputRef}
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      commitText();
+                    }
+                    if (e.key === 'Escape') setEditing(null);
+                  }}
+                  onBlur={commitText}
+                  placeholder={t('t.imageRedact.textPlaceholder', 'e.g. CONFIDENTIAL')}
+                  style={{
+                    position: 'absolute',
+                    left: editing.left,
+                    top: editing.top,
+                    // Se escala igual que el lienzo para que veas el tamano real del texto.
+                    fontSize: Math.max(11, fontSize * (canvasRef.current ? canvasRef.current.getBoundingClientRect().width / size.w : 1)),
+                    fontWeight: 700,
+                    color,
+                    background: 'rgba(0,0,0,0.55)',
+                    border: '2px dashed #0a7cff',
+                    padding: '0 4px',
+                    minWidth: 120,
+                    outline: 'none',
+                  }}
+                />
+              )}
+            </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <button type="button" className="btn" onClick={undo} disabled={!ops.length}>
+            <button type="button" className="btn" onClick={undo} disabled={!ops.length} title="Ctrl/⌘ + Z">
               {t('t.imageRedact.undo', 'Undo')}
             </button>
-            <button type="button" className="btn" onClick={redoOp} disabled={!redo.length}>
+            <button type="button" className="btn" onClick={redo} disabled={!hist.redo.length} title="Ctrl/⌘ + Shift + Z">
               {t('t.imageRedact.redo', 'Redo')}
             </button>
-            <button type="button" className="btn" onClick={() => { setOps([]); setRedo([]); }} disabled={!ops.length}>
+            <button type="button" className="btn" onClick={() => setHist({ ops: [], redo: [] })} disabled={!ops.length}>
               {t('t.imageRedact.reset', 'Clear edits')}
             </button>
             <span className="flex-1" />
@@ -415,10 +598,21 @@ export default function ImageRedactTool({ dict }: Props) {
                 {f === 'jpeg' ? 'JPG' : 'PNG'}
               </button>
             ))}
+            <button type="button" className="btn" onClick={() => void copy()}>
+              {copied === 'ok'
+                ? t('t.imageRedact.copied', 'Copied')
+                : copied === 'fail'
+                  ? t('t.imageRedact.copyFail', 'Copy failed')
+                  : t('t.imageRedact.copy', 'Copy image')}
+            </button>
             <button type="button" className="btn btn-primary" onClick={() => void download()}>
               {t('t.imageRedact.download', 'Download')}
             </button>
           </div>
+
+          <p className="font-mono text-xs" style={{ color: 'var(--color-fg-muted)' }}>
+            {t('t.imageRedact.shortcuts', 'Shortcuts: Ctrl/⌘+Z undo · Ctrl/⌘+Shift+Z redo · Esc cancel · Ctrl/⌘+V paste a screenshot')}
+          </p>
 
           <p className="font-mono text-xs" style={{ color: 'var(--color-fg-muted)' }}>
             {t('t.imageRedact.safety', 'The exported file is flattened: covered pixels are gone, not hidden under a layer. A solid box is the only edit that cannot be reversed — pixelation and blur can sometimes be partly recovered from text.')}
