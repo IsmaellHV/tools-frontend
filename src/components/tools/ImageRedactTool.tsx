@@ -20,6 +20,13 @@ const COLORS = ['#000000', '#ffffff', '#ff2d2d', '#ffd400', '#0a7cff'];
 const newId = (): string =>
   typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `s_${Date.now()}_${Math.round(Math.random() * 1e6)}`;
 
+/** Luminancia aproximada: decide el fondo del campo flotante segun el color elegido. */
+const isLight = (hex: string): boolean => {
+  const n = hex.replace('#', '');
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(n.slice(i, i + 2), 16));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b > 140;
+};
+
 const loadImage = (src: string): Promise<HTMLImageElement> =>
   new Promise((res, rej) => {
     const i = new Image();
@@ -33,7 +40,6 @@ export default function ImageRedactTool({ dict }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const bakedRef = useRef<HTMLCanvasElement | null>(null); // base + ops ya aplicadas
   const imgRef = useRef<HTMLImageElement | null>(null);
-  const blobRef = useRef<Blob | null>(null);
   const dragRef = useRef<{ x: number; y: number; w: number; h: number } | null>(null);
   const textInputRef = useRef<HTMLInputElement>(null);
 
@@ -169,7 +175,6 @@ export default function ImageRedactTool({ dict }: Props) {
       try {
         const img = await loadImage(url);
         imgRef.current = img;
-        blobRef.current = f;
         setSize({ w: img.naturalWidth, h: img.naturalHeight });
         setName(fileName || (f as File).name || 'image');
         setHist({ ops: [], redo: [] });
@@ -317,26 +322,35 @@ export default function ImageRedactTool({ dict }: Props) {
     if (!ready || !ops.length || !sessionId) return;
     const id = setTimeout(async () => {
       const img = imgRef.current;
-      const original = blobRef.current;
-      if (!img || !original) return;
+      if (!img) return;
       const full = renderFull(img, size.w, size.h, ops);
-      await saveSession({ id: sessionId, name, ts: Date.now(), width: size.w, height: size.h, original, thumb: await makeThumb(full), ops });
+      // Se persiste el PNG ya aplanado, nunca los pixeles originales.
+      await saveSession({
+        id: sessionId,
+        name,
+        ts: Date.now(),
+        width: size.w,
+        height: size.h,
+        result: await canvasToBlob(full, 'image/png'),
+        thumb: await makeThumb(full),
+      });
       void refreshHistory();
     }, 900);
     return () => clearTimeout(id);
   }, [ready, ops, sessionId, name, size.w, size.h, refreshHistory]);
 
+  // Se reabre sobre la imagen ya censurada: no hay original que restaurar, asi
+  // que las censuras previas quedan fijadas y encima se sigue anotando.
   const restore = async (id: string) => {
     const s = await getSession(id);
     if (!s) return;
-    const url = URL.createObjectURL(s.original);
+    const url = URL.createObjectURL(s.result);
     try {
       const img = await loadImage(url);
       imgRef.current = img;
-      blobRef.current = s.original;
       setSize({ w: s.width, h: s.height });
       setName(s.name);
-      setHist({ ops: s.ops, redo: [] });
+      setHist({ ops: [], redo: [] });
       setPoly([]);
       setEditing(null);
       setSessionId(s.id);
@@ -550,34 +564,63 @@ export default function ImageRedactTool({ dict }: Props) {
                 }}
               />
               {editing && (
-                <input
-                  ref={textInputRef}
-                  value={draft}
-                  onChange={(e) => setDraft(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      commitText();
-                    }
-                    if (e.key === 'Escape') setEditing(null);
-                  }}
-                  onBlur={commitText}
-                  placeholder={t('t.imageRedact.textPlaceholder', 'e.g. CONFIDENTIAL')}
-                  style={{
-                    position: 'absolute',
-                    left: editing.left,
-                    top: editing.top,
-                    // Se escala igual que el lienzo para que veas el tamano real del texto.
-                    fontSize: Math.max(11, fontSize * (canvasRef.current ? canvasRef.current.getBoundingClientRect().width / size.w : 1)),
-                    fontWeight: 700,
-                    color,
-                    background: 'rgba(0,0,0,0.55)',
-                    border: '2px dashed #0a7cff',
-                    padding: '0 4px',
-                    minWidth: 120,
-                    outline: 'none',
-                  }}
-                />
+                <div style={{ position: 'absolute', left: editing.left, top: editing.top, zIndex: 5 }}>
+                  {/* Sin esta etiqueta el campo aparecia y desaparecia sin explicar que hacer. */}
+                  <span
+                    style={{
+                      position: 'absolute',
+                      bottom: '100%',
+                      left: 0,
+                      marginBottom: 4,
+                      whiteSpace: 'nowrap',
+                      background: '#0a7cff',
+                      color: '#fff',
+                      fontFamily: 'ui-monospace, Menlo, monospace',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      padding: '2px 6px',
+                    }}
+                  >
+                    {t('t.imageRedact.textBadge', 'Type · Enter to place · Esc to cancel')}
+                  </span>
+                  <input
+                    ref={textInputRef}
+                    value={draft}
+                    onChange={(e) => setDraft(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        commitText();
+                      }
+                      if (e.key === 'Escape') {
+                        e.preventDefault();
+                        setDraft('');
+                        setEditing(null);
+                      }
+                    }}
+                    onBlur={commitText}
+                    placeholder={t('t.imageRedact.textPlaceholder', 'e.g. CONFIDENTIAL')}
+                    style={{
+                      // `width` explicito: la regla global `input { width: 100% }` estiraba
+                      // el campo a todo el lienzo y no parecia un campo de texto.
+                      width: `${Math.max(9, draft.length + 2)}ch`,
+                      minWidth: 90,
+                      padding: '0 4px',
+                      fontFamily: 'ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+                      fontWeight: 700,
+                      // Escalado como el lienzo: lo que escribes ya es la vista previa real.
+                      fontSize: Math.max(11, fontSize * (canvasRef.current ? canvasRef.current.getBoundingClientRect().width / size.w : 1)),
+                      lineHeight: 1.15,
+                      color,
+                      caretColor: color,
+                      // El fondo contrasta con el color elegido: en negro sobre negro no se veia nada.
+                      background: isLight(color) ? 'rgba(0,0,0,0.62)' : 'rgba(255,255,255,0.85)',
+                      border: '2px dashed #0a7cff',
+                      borderRadius: 0,
+                      outline: 'none',
+                    }}
+                  />
+                </div>
               )}
             </div>
           </div>

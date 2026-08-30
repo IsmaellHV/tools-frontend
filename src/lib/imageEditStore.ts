@@ -1,10 +1,12 @@
 // Historial local del editor de imagenes. Vive en IndexedDB y no en
-// localStorage porque cada sesion guarda blobs a resolucion completa: una sola
-// foto ya supera la cuota de ~5 MB que tiene el almacenamiento de strings.
+// localStorage porque cada sesion guarda un blob a resolucion completa: una
+// sola foto ya supera la cuota de ~5 MB que tiene el almacenamiento de strings.
 //
-// Nota de privacidad: `original` son los pixeles SIN censurar. Se guarda para
-// poder seguir editando una sesion anterior, pero por eso la lista se pinta con
-// `thumb` (el render ya censurado) y la herramienta ofrece borrado explicito.
+// Privacidad: aqui SOLO se guarda el resultado ya censurado. El original se
+// queda en memoria mientras editas y se pierde al cerrar la pestana, asi que
+// una contrasena tapada no puede recuperarse desde el disco del navegador.
+// El precio es que al reabrir una sesion se continua sobre la imagen censurada
+// y las censuras anteriores ya no se pueden deshacer, que es justo lo deseable.
 
 export type EditOp =
   // `fill` ausente = relleno (comportamiento de las sesiones guardadas antes de
@@ -23,27 +25,31 @@ export interface EditSession {
   ts: number;
   width: number;
   height: number;
-  original: Blob;
+  /** Render aplanado: los pixeles tapados ya no existen en este blob. */
+  result: Blob;
   thumb: Blob;
-  ops: EditOp[];
 }
 
-/** Metadatos sin los blobs pesados, para listar sin cargar cada original. */
-export type SessionSummary = Omit<EditSession, 'original' | 'ops'>;
+/** Metadatos sin el blob grande, para listar sin cargar cada imagen. */
+export type SessionSummary = Omit<EditSession, 'result'>;
 
 const DB_NAME = 'tools_image_redact';
-const DB_VERSION = 1;
+// v2 dejo de guardar el original. Al subir de version se vacia el almacen para
+// que los originales sin censurar que dejo v1 no sigan en disco.
+const DB_VERSION = 2;
 const STORE = 'sessions';
 export const HISTORY_MAX = 12;
 
 const openDb = (): Promise<IDBDatabase> =>
   new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, DB_VERSION);
-    req.onupgradeneeded = () => {
+    req.onupgradeneeded = (e) => {
       const db = req.result;
       if (!db.objectStoreNames.contains(STORE)) {
         db.createObjectStore(STORE, { keyPath: 'id' }).createIndex('ts', 'ts');
+        return;
       }
+      if (e.oldVersion < 2) req.transaction?.objectStore(STORE).clear();
     };
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
@@ -63,7 +69,7 @@ const tx = async <T>(mode: IDBTransactionMode, run: (store: IDBObjectStore) => I
   }
 };
 
-/** Devuelve las sesiones mas recientes primero, sin los blobs originales. */
+/** Devuelve las sesiones mas recientes primero, sin el blob del resultado. */
 export async function listSessions(): Promise<SessionSummary[]> {
   try {
     const all = await tx<EditSession[]>('readonly', (s) => s.getAll() as IDBRequest<EditSession[]>);

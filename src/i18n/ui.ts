@@ -533,6 +533,7 @@ export const ui = {
     't.imageRedact.radius': 'Blur radius',
     't.imageRedact.text': 'Text',
     't.imageRedact.textPlaceholder': 'e.g. CONFIDENTIAL',
+    't.imageRedact.textBadge': 'Type here · Enter to place · Esc to cancel',
     't.imageRedact.fontSize': 'Font size',
     't.imageRedact.undo': 'Undo',
     't.imageRedact.redo': 'Redo',
@@ -546,7 +547,7 @@ export const ui = {
     't.imageRedact.delete': 'Delete',
     't.imageRedact.clearAll': 'Delete all',
     't.imageRedact.storageNote':
-      'Saved sessions keep the untouched original so you can keep editing — they stay in this browser on this device and are never uploaded. Use “Delete all” on a shared computer.',
+      'Only the redacted result is stored — the untouched original never leaves memory, so a covered password cannot be recovered from here. Reopening one continues on top of the redacted image, so earlier redactions stay permanent. Everything stays in this browser and is never uploaded.',
     't.imageRedact.error': 'Could not open this image.',
 
     'seo.imageConvert.title': 'Convert Image Online — PNG / JPG / WebP, Free, No Upload · DevTools',
@@ -1177,6 +1178,7 @@ export const ui = {
     't.imageRedact.radius': 'Radio de desenfoque',
     't.imageRedact.text': 'Texto',
     't.imageRedact.textPlaceholder': 'ej. CONFIDENCIAL',
+    't.imageRedact.textBadge': 'Escribe aquí · Enter coloca · Esc cancela',
     't.imageRedact.fontSize': 'Tamaño de letra',
     't.imageRedact.undo': 'Deshacer',
     't.imageRedact.redo': 'Rehacer',
@@ -1190,7 +1192,7 @@ export const ui = {
     't.imageRedact.delete': 'Borrar',
     't.imageRedact.clearAll': 'Borrar todo',
     't.imageRedact.storageNote':
-      'Las sesiones guardadas conservan el original sin censurar para poder seguir editando — se quedan en este navegador y en este dispositivo, nunca se suben. Usa «Borrar todo» en un equipo compartido.',
+      'Solo se guarda el resultado ya censurado: el original nunca sale de la memoria, así que una contraseña tapada no se puede recuperar desde aquí. Al reabrir una sesión continúas sobre la imagen censurada, de modo que las censuras anteriores son permanentes. Todo se queda en este navegador y nunca se sube.',
     't.imageRedact.error': 'No se pudo abrir esta imagen.',
 
     'seo.imageConvert.title': 'Convertir Imagen Online — PNG / JPG / WebP, Gratis, Sin Subir · DevTools',
