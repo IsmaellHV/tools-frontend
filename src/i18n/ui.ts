@@ -478,6 +478,8 @@ export const ui = {
     'home.cards.imageConvert.body': 'Convert images between PNG, JPG and WebP. Batch + ZIP.',
     'home.cards.imageResize.title': 'Resize image',
     'home.cards.imageResize.body': 'Resize by pixels or percentage, keep aspect ratio.',
+    'home.cards.imageRedact.title': 'Redact image',
+    'home.cards.imageRedact.body': 'Cover sensitive data with boxes, pixelation or blur, and write on top.',
 
     't.imageConvert.title': 'Convert image',
     't.imageConvert.lead': 'Convert one or many images between PNG, JPG and WebP. Download each or all as a ZIP. Nothing is uploaded.',
@@ -504,6 +506,35 @@ export const ui = {
     't.imageResize.download': 'Download',
     't.imageResize.working': 'Resizing…',
     't.imageResize.error': 'Could not process this image.',
+    't.imageRedact.title': 'Redact & annotate image',
+    't.imageRedact.lead': 'Hide sensitive data behind a box, pixelation or blur, and write notes on top. The export is flattened and nothing is uploaded.',
+    't.imageRedact.drop': 'Drop an image, paste a screenshot, or click to choose',
+    't.imageRedact.tool.box': 'Box',
+    't.imageRedact.tool.pixelate': 'Pixelate',
+    't.imageRedact.tool.blur': 'Blur',
+    't.imageRedact.tool.text': 'Text',
+    't.imageRedact.hintDrag': 'Drag over the area you want to cover.',
+    't.imageRedact.hintText': 'Type your note, then click on the image to place it.',
+    't.imageRedact.color': 'Color',
+    't.imageRedact.blockSize': 'Block size',
+    't.imageRedact.radius': 'Blur radius',
+    't.imageRedact.text': 'Text',
+    't.imageRedact.textPlaceholder': 'e.g. CONFIDENTIAL',
+    't.imageRedact.fontSize': 'Font size',
+    't.imageRedact.undo': 'Undo',
+    't.imageRedact.redo': 'Redo',
+    't.imageRedact.reset': 'Clear edits',
+    't.imageRedact.download': 'Download',
+    't.imageRedact.safety':
+      'The exported file is flattened: covered pixels are gone, not hidden under a layer. A solid box is the only edit that cannot be reversed — pixelation and blur can sometimes be partly recovered from text.',
+    't.imageRedact.history': 'Saved on this device',
+    't.imageRedact.historyEmpty': 'Your edits are saved here automatically so you can pick them up later.',
+    't.imageRedact.restore': 'Open',
+    't.imageRedact.delete': 'Delete',
+    't.imageRedact.clearAll': 'Delete all',
+    't.imageRedact.storageNote':
+      'Saved sessions keep the untouched original so you can keep editing — they stay in this browser on this device and are never uploaded. Use “Delete all” on a shared computer.',
+    't.imageRedact.error': 'Could not open this image.',
 
     'seo.imageConvert.title': 'Convert Image Online — PNG / JPG / WebP, Free, No Upload · DevTools',
     'seo.imageConvert.description':
@@ -514,6 +545,11 @@ export const ui = {
     'seo.imageResize.description':
       'Resize images by exact pixels or percentage in your browser, keeping aspect ratio. Export to PNG, JPG or WebP. No upload, no watermark.',
     'seo.imageResize.keywords': 'resize image, image resizer free, scale image, resize jpg png, change image dimensions, no upload',
+    'seo.imageRedact.title': 'Redact Image Online — Hide Data with a Box, Pixelate or Blur, Free, No Upload · DevTools',
+    'seo.imageRedact.description':
+      'Redact sensitive data in a photo or screenshot: cover it with a box, pixelate or blur it, and add text on top. Runs in your browser — no upload, no watermark.',
+    'seo.imageRedact.keywords':
+      'redact image, hide data in image, censor photo, pixelate image, blur part of image, black out text in screenshot, annotate image, no upload',
 
     'home.cards.pdfPageNumbers.title': 'Number pages',
     'home.cards.pdfPageNumbers.body': 'Add page numbers to a PDF — choose the position.',
@@ -1073,6 +1109,8 @@ export const ui = {
     'home.cards.imageConvert.body': 'Convierte imágenes entre PNG, JPG y WebP. Por lote + ZIP.',
     'home.cards.imageResize.title': 'Redimensionar imagen',
     'home.cards.imageResize.body': 'Redimensiona por píxeles o porcentaje, mantiene proporción.',
+    'home.cards.imageRedact.title': 'Censurar imagen',
+    'home.cards.imageRedact.body': 'Oculta datos sensibles con recuadros, pixelado o desenfoque y escribe encima.',
 
     't.imageConvert.title': 'Convertir imagen',
     't.imageConvert.lead': 'Convierte una o varias imágenes entre PNG, JPG y WebP. Descarga cada una o todas en un ZIP. No se sube nada.',
@@ -1099,6 +1137,35 @@ export const ui = {
     't.imageResize.download': 'Descargar',
     't.imageResize.working': 'Redimensionando…',
     't.imageResize.error': 'No se pudo procesar esta imagen.',
+    't.imageRedact.title': 'Censurar y anotar imagen',
+    't.imageRedact.lead': 'Oculta datos sensibles tras un recuadro, pixelado o desenfoque, y escribe notas encima. La exportación va aplanada y no se sube nada.',
+    't.imageRedact.drop': 'Arrastra una imagen, pega una captura o haz clic para elegir',
+    't.imageRedact.tool.box': 'Recuadro',
+    't.imageRedact.tool.pixelate': 'Pixelar',
+    't.imageRedact.tool.blur': 'Desenfocar',
+    't.imageRedact.tool.text': 'Texto',
+    't.imageRedact.hintDrag': 'Arrastra sobre la zona que quieres tapar.',
+    't.imageRedact.hintText': 'Escribe tu nota y haz clic en la imagen para colocarla.',
+    't.imageRedact.color': 'Color',
+    't.imageRedact.blockSize': 'Tamaño de bloque',
+    't.imageRedact.radius': 'Radio de desenfoque',
+    't.imageRedact.text': 'Texto',
+    't.imageRedact.textPlaceholder': 'ej. CONFIDENCIAL',
+    't.imageRedact.fontSize': 'Tamaño de letra',
+    't.imageRedact.undo': 'Deshacer',
+    't.imageRedact.redo': 'Rehacer',
+    't.imageRedact.reset': 'Quitar ediciones',
+    't.imageRedact.download': 'Descargar',
+    't.imageRedact.safety':
+      'El archivo exportado va aplanado: los píxeles tapados desaparecen, no quedan bajo una capa. El recuadro sólido es la única edición irreversible — el pixelado y el desenfoque a veces se recuperan en parte cuando tapan texto.',
+    't.imageRedact.history': 'Guardado en este dispositivo',
+    't.imageRedact.historyEmpty': 'Tus ediciones se guardan aquí solas para que puedas retomarlas después.',
+    't.imageRedact.restore': 'Abrir',
+    't.imageRedact.delete': 'Borrar',
+    't.imageRedact.clearAll': 'Borrar todo',
+    't.imageRedact.storageNote':
+      'Las sesiones guardadas conservan el original sin censurar para poder seguir editando — se quedan en este navegador y en este dispositivo, nunca se suben. Usa «Borrar todo» en un equipo compartido.',
+    't.imageRedact.error': 'No se pudo abrir esta imagen.',
 
     'seo.imageConvert.title': 'Convertir Imagen Online — PNG / JPG / WebP, Gratis, Sin Subir · DevTools',
     'seo.imageConvert.description':
@@ -1110,6 +1177,11 @@ export const ui = {
       'Redimensiona imágenes por píxeles exactos o porcentaje en tu navegador, manteniendo la proporción. Exporta a PNG, JPG o WebP. Sin subir nada.',
     'seo.imageResize.keywords':
       'redimensionar imagen, redimensionar imágenes gratis, escalar imagen, cambiar tamaño imagen, resize jpg png, sin subir',
+    'seo.imageRedact.title': 'Censurar Imagen Online — Ocultar Datos con Recuadro, Pixelado o Desenfoque, Gratis · DevTools',
+    'seo.imageRedact.description':
+      'Censura datos sensibles en una foto o captura: tápalos con un recuadro, pixelado o desenfoque y añade texto encima. Todo en tu navegador — sin subir nada, sin marca de agua.',
+    'seo.imageRedact.keywords':
+      'censurar imagen, ocultar datos en imagen, tapar datos en captura, pixelar imagen, desenfocar parte de una imagen, tachar texto en captura, anotar imagen, sin subir',
 
     'home.cards.pdfPageNumbers.title': 'Numerar páginas',
     'home.cards.pdfPageNumbers.body': 'Agrega números de página a un PDF — elige la posición.',

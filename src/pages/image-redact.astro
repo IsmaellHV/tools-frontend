@@ -1,0 +1,55 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ToolShell from '~/components/ToolShell.astro';
+import ImageRedactTool from '~/components/tools/ImageRedactTool';
+import { getLangFromUrl, useTranslations, withBase } from '~/i18n/utils';
+import { buildDict } from '~/lib/dict';
+import { buildToolJsonLd } from '~/lib/seo';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const h1 = t('t.imageRedact.title');
+const lead = t('t.imageRedact.lead');
+const metaTitle = t('seo.imageRedact.title');
+const metaDesc = t('seo.imageRedact.description');
+const keywords = t('seo.imageRedact.keywords');
+
+const SITE = (import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'https://ismaelhv.com').replace(/\/$/, '');
+const url = `${SITE}${Astro.url.pathname.replace(/\/$/, '')}`;
+const homePath = lang === 'en' ? withBase('/') : withBase('/es/');
+const jsonLd = buildToolJsonLd({ name: h1, description: lead, url, lang, category: 'MultimediaApplication' }, SITE, homePath);
+
+const dict = buildDict(lang, [
+  't.imageRedact.drop',
+  't.imageRedact.tool.box',
+  't.imageRedact.tool.pixelate',
+  't.imageRedact.tool.blur',
+  't.imageRedact.tool.text',
+  't.imageRedact.hintDrag',
+  't.imageRedact.hintText',
+  't.imageRedact.color',
+  't.imageRedact.blockSize',
+  't.imageRedact.radius',
+  't.imageRedact.text',
+  't.imageRedact.textPlaceholder',
+  't.imageRedact.fontSize',
+  't.imageRedact.undo',
+  't.imageRedact.redo',
+  't.imageRedact.reset',
+  't.imageRedact.download',
+  't.imageRedact.safety',
+  't.imageRedact.history',
+  't.imageRedact.historyEmpty',
+  't.imageRedact.restore',
+  't.imageRedact.delete',
+  't.imageRedact.clearAll',
+  't.imageRedact.storageNote',
+  't.imageRedact.error',
+] as const);
+---
+
+<BaseLayout title={metaTitle} description={metaDesc} {keywords} {jsonLd}>
+  <ToolShell title={h1} {lead}>
+    <ImageRedactTool client:only="react" dict={dict} />
+  </ToolShell>
+</BaseLayout>

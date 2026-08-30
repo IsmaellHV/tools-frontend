@@ -47,6 +47,7 @@ export const TOOLS: readonly ToolMeta[] = [
   { slug: 'image-compress', titleKey: 'home.cards.imageCompress.title', bodyKey: 'home.cards.imageCompress.body', category: 'image' },
   { slug: 'image-convert', titleKey: 'home.cards.imageConvert.title', bodyKey: 'home.cards.imageConvert.body', category: 'image' },
   { slug: 'image-resize', titleKey: 'home.cards.imageResize.title', bodyKey: 'home.cards.imageResize.body', category: 'image' },
+  { slug: 'image-redact', titleKey: 'home.cards.imageRedact.title', bodyKey: 'home.cards.imageRedact.body', category: 'image' },
 ] as const;
 
 export function toolsByCategory(category: ToolCategory): ToolMeta[] {
