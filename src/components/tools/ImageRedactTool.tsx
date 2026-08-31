@@ -261,6 +261,9 @@ export default function ImageRedactTool({ dict }: Props) {
     const p = toImageCoords(e);
 
     if (tool === 'text') {
+      // Sin preventDefault el navegador procesa el mousedown de compatibilidad,
+      // manda el foco al body y el onBlur cierra el campo en el mismo clic.
+      e.preventDefault();
       // El input flota justo donde has hecho clic: escribes sobre la imagen.
       setDraft('');
       setEditing({ ix: p.x, iy: p.y, left: p.x * p.sx, top: p.y * p.sx });
@@ -313,7 +316,10 @@ export default function ImageRedactTool({ dict }: Props) {
   };
 
   useEffect(() => {
-    if (editing) textInputRef.current?.focus();
+    if (!editing) return;
+    // En el mismo tick el navegador todavia esta resolviendo el foco del clic.
+    const id = requestAnimationFrame(() => textInputRef.current?.focus());
+    return () => cancelAnimationFrame(id);
   }, [editing]);
 
   /* ---------- guardado local ---------- */
