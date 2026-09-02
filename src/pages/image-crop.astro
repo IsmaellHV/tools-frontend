@@ -1,0 +1,48 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ToolShell from '~/components/ToolShell.astro';
+import ImageCropTool from '~/components/tools/ImageCropTool';
+import { getLangFromUrl, useTranslations, withBase } from '~/i18n/utils';
+import { buildDict } from '~/lib/dict';
+import { buildToolJsonLd } from '~/lib/seo';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const h1 = t('t.imageCrop.title');
+const lead = t('t.imageCrop.lead');
+const metaTitle = t('seo.imageCrop.title');
+const metaDesc = t('seo.imageCrop.description');
+const keywords = t('seo.imageCrop.keywords');
+
+const SITE = (import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || 'https://ismaelhv.com').replace(/\/$/, '');
+const url = `${SITE}${Astro.url.pathname.replace(/\/$/, '')}`;
+const homePath = lang === 'en' ? withBase('/') : withBase('/es/');
+const jsonLd = buildToolJsonLd({ name: h1, description: lead, url, lang, category: 'MultimediaApplication' }, SITE, homePath);
+
+const dict = buildDict(lang, [
+  't.imageCrop.drop',
+  't.imageCrop.hint',
+  't.imageCrop.ratio',
+  't.imageCrop.ratio.free',
+  't.imageCrop.ratio.square',
+  't.imageCrop.ratio.r43',
+  't.imageCrop.ratio.r32',
+  't.imageCrop.ratio.r169',
+  't.imageCrop.x',
+  't.imageCrop.y',
+  't.imageCrop.w',
+  't.imageCrop.h',
+  't.imageCrop.output',
+  't.imageCrop.copy',
+  't.imageCrop.copied',
+  't.imageCrop.copyFail',
+  't.imageCrop.download',
+  't.imageCrop.error',
+] as const);
+---
+
+<BaseLayout title={metaTitle} description={metaDesc} {keywords} {jsonLd}>
+  <ToolShell title={h1} {lead}>
+    <ImageCropTool client:only="react" dict={dict} />
+  </ToolShell>
+</BaseLayout>

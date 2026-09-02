@@ -489,6 +489,8 @@ export const ui = {
     'home.cards.imageResize.body': 'Resize by pixels or percentage, keep aspect ratio.',
     'home.cards.imageRedact.title': 'Redact image',
     'home.cards.imageRedact.body': 'Cover sensitive data with boxes, pixelation or blur, and write on top.',
+    'home.cards.imageCrop.title': 'Crop image',
+    'home.cards.imageCrop.body': 'Cut out any region — free or locked to a ratio, down to the exact pixel.',
 
     't.imageConvert.title': 'Convert image',
     't.imageConvert.lead': 'Convert one or many images between PNG, JPG and WebP. Download each or all as a ZIP. Nothing is uploaded.',
@@ -558,6 +560,26 @@ export const ui = {
     't.imageRedact.storageNote':
       'Only the redacted result is stored — the untouched original never leaves memory, so a covered password cannot be recovered from here. Reopening one continues on top of the redacted image, so earlier redactions stay permanent. Everything stays in this browser and is never uploaded.',
     't.imageRedact.error': 'Could not open this image.',
+    't.imageCrop.title': 'Crop image',
+    't.imageCrop.lead': 'Cut out any part of an image — drag freely or lock an aspect ratio. Nothing is uploaded.',
+    't.imageCrop.drop': 'Drop an image, paste a screenshot, or click to choose',
+    't.imageCrop.hint': 'Drag to select, drag inside to move, or pull the handles to adjust.',
+    't.imageCrop.ratio': 'Aspect ratio',
+    't.imageCrop.ratio.free': 'Free',
+    't.imageCrop.ratio.square': 'Square',
+    't.imageCrop.ratio.r43': '4:3',
+    't.imageCrop.ratio.r32': '3:2',
+    't.imageCrop.ratio.r169': '16:9',
+    't.imageCrop.x': 'X',
+    't.imageCrop.y': 'Y',
+    't.imageCrop.w': 'Width',
+    't.imageCrop.h': 'Height',
+    't.imageCrop.output': 'Output',
+    't.imageCrop.copy': 'Copy',
+    't.imageCrop.copied': 'Copied',
+    't.imageCrop.copyFail': 'Copy failed',
+    't.imageCrop.download': 'Download',
+    't.imageCrop.error': 'Could not open this image.',
 
     'seo.imageConvert.title': 'Convert Image Online — PNG / JPG / WebP, Free, No Upload · DevTools',
     'seo.imageConvert.description':
@@ -573,6 +595,11 @@ export const ui = {
       'Redact sensitive data in a photo or screenshot: cover it with a box, pixelate or blur it, and add text on top. Runs in your browser — no upload, no watermark.',
     'seo.imageRedact.keywords':
       'redact image, hide data in image, censor photo, pixelate image, blur part of image, black out text in screenshot, annotate image, no upload',
+    'seo.imageCrop.title': 'Crop Image Online — Free, Pixel Precise, No Upload · DevTools',
+    'seo.imageCrop.description':
+      'Crop a photo or screenshot in your browser: drag a selection, lock a 1:1, 4:3, 3:2 or 16:9 ratio, or type exact pixels. Export to PNG, JPG or WebP. No upload, no watermark.',
+    'seo.imageCrop.keywords':
+      'crop image, crop photo online, image cropper free, crop screenshot, square crop, 16:9 crop, crop jpg png, no upload',
 
     'home.cards.pdfPageNumbers.title': 'Number pages',
     'home.cards.pdfPageNumbers.body': 'Add page numbers to a PDF — choose the position.',
@@ -1143,6 +1170,8 @@ export const ui = {
     'home.cards.imageResize.body': 'Redimensiona por píxeles o porcentaje, mantiene proporción.',
     'home.cards.imageRedact.title': 'Censurar imagen',
     'home.cards.imageRedact.body': 'Oculta datos sensibles con recuadros, pixelado o desenfoque y escribe encima.',
+    'home.cards.imageCrop.title': 'Recortar imagen',
+    'home.cards.imageCrop.body': 'Recorta cualquier zona — libre o con proporción fija, al píxel exacto.',
 
     't.imageConvert.title': 'Convertir imagen',
     't.imageConvert.lead': 'Convierte una o varias imágenes entre PNG, JPG y WebP. Descarga cada una o todas en un ZIP. No se sube nada.',
@@ -1212,6 +1241,26 @@ export const ui = {
     't.imageRedact.storageNote':
       'Solo se guarda el resultado ya censurado: el original nunca sale de la memoria, así que una contraseña tapada no se puede recuperar desde aquí. Al reabrir una sesión continúas sobre la imagen censurada, de modo que las censuras anteriores son permanentes. Todo se queda en este navegador y nunca se sube.',
     't.imageRedact.error': 'No se pudo abrir esta imagen.',
+    't.imageCrop.title': 'Recortar imagen',
+    't.imageCrop.lead': 'Recorta cualquier parte de una imagen — a mano libre o con proporción fija. No se sube nada.',
+    't.imageCrop.drop': 'Arrastra una imagen, pega una captura o haz clic para elegir',
+    't.imageCrop.hint': 'Arrastra para seleccionar, arrastra dentro para mover o tira de los tiradores para ajustar.',
+    't.imageCrop.ratio': 'Proporción',
+    't.imageCrop.ratio.free': 'Libre',
+    't.imageCrop.ratio.square': 'Cuadrada',
+    't.imageCrop.ratio.r43': '4:3',
+    't.imageCrop.ratio.r32': '3:2',
+    't.imageCrop.ratio.r169': '16:9',
+    't.imageCrop.x': 'X',
+    't.imageCrop.y': 'Y',
+    't.imageCrop.w': 'Ancho',
+    't.imageCrop.h': 'Alto',
+    't.imageCrop.output': 'Resultado',
+    't.imageCrop.copy': 'Copiar',
+    't.imageCrop.copied': 'Copiada',
+    't.imageCrop.copyFail': 'No se pudo copiar',
+    't.imageCrop.download': 'Descargar',
+    't.imageCrop.error': 'No se pudo abrir esta imagen.',
 
     'seo.imageConvert.title': 'Convertir Imagen Online — PNG / JPG / WebP, Gratis, Sin Subir · DevTools',
     'seo.imageConvert.description':
@@ -1228,6 +1277,11 @@ export const ui = {
       'Censura datos sensibles en una foto o captura: tápalos con un recuadro, pixelado o desenfoque y añade texto encima. Todo en tu navegador — sin subir nada, sin marca de agua.',
     'seo.imageRedact.keywords':
       'censurar imagen, ocultar datos en imagen, tapar datos en captura, pixelar imagen, desenfocar parte de una imagen, tachar texto en captura, anotar imagen, sin subir',
+    'seo.imageCrop.title': 'Recortar Imagen Online — Gratis, Al Píxel, Sin Subir · DevTools',
+    'seo.imageCrop.description':
+      'Recorta una foto o captura en tu navegador: arrastra la selección, fija una proporción 1:1, 4:3, 3:2 o 16:9, o escribe los píxeles exactos. Exporta a PNG, JPG o WebP. Sin subir nada, sin marca de agua.',
+    'seo.imageCrop.keywords':
+      'recortar imagen, recortar foto online, cortar imagen gratis, recortar captura, recorte cuadrado, recorte 16:9, recortar jpg png, sin subir',
 
     'home.cards.pdfPageNumbers.title': 'Numerar páginas',
     'home.cards.pdfPageNumbers.body': 'Agrega números de página a un PDF — elige la posición.',
